@@ -7,7 +7,7 @@ exports["default"] = void 0;
 
 var _express = _interopRequireDefault(require("express"));
 
-var _authorization = require("../../../middleware/authorization");
+var _authorization = require("../../middleware/authorization");
 
 var _controller = require("./controller");
 
@@ -30,9 +30,10 @@ var router = _express["default"].Router();
  * @apiSuccess {Object[]} Array of Objects of records.
  * @apiError {Object} 400 Some parameters may contain invalid values.
  */
+// router.get("/user", [checkAuth, isValidUser], fetchHandler);
 
 
-router.get("/user", [_authorization.checkAuth, _authorization.isValidUser], _controller.fetchHandler);
+router.get("/user", _controller.fetchHandler);
 /**
  * @api {post} /api/user Create a User record
  * @apiName CreateUser

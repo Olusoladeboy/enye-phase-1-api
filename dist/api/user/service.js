@@ -10,9 +10,6 @@ exports.createService = createService;
 exports.updateService = updateService;
 exports.patchService = patchService;
 exports.deleteService = deleteService;
-exports.sendOTPService = sendOTPService;
-exports.updateApprovalService = updateApprovalService;
-exports.updateEmploymentService = updateEmploymentService;
 exports.loginService = loginService;
 exports.updateTerminalIdService = updateTerminalIdService;
 
@@ -24,11 +21,9 @@ var _apiQueryParams = _interopRequireDefault(require("api-query-params"));
 
 var _model = _interopRequireWildcard(require("./model"));
 
-var _util = require("../../../util");
+var _util = require("../../util");
 
-var _services = require("../../../services");
-
-var _constants = require("../../../constants");
+var _constants = require("../../constants");
 
 function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function _getRequireWildcardCache() { return cache; }; return cache; }
 
@@ -41,7 +36,7 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
 // Logging
-var _module = "Staff";
+var _module = "User";
 
 function fetchService(_x, _x2) {
   return _fetchService.apply(this, arguments);
@@ -140,7 +135,6 @@ function _createService() {
         kinAddress,
         terminal,
         customerData,
-        customer,
         _args2 = arguments;
 
     return regeneratorRuntime.wrap(function _callee2$(_context2) {
@@ -199,14 +193,11 @@ function _createService() {
             throw new Error("".concat(_module, " record not found."));
 
           case 20:
-            //* Send Login credentials to Staff via email
+            //* Send Login credentials to User via email
             subject = "Welcome, ".concat(data.otherName, " to Peacegroup ERP Dove2.0");
-            body = "Your email is ".concat(data.email, " and your password is ").concat(password);
-            _context2.next = 24;
-            return (0, _services.sendEmailAsync)(data.email, "no-reply@peacegroup.ng", subject, body);
+            body = "Your email is ".concat(data.email, " and your password is ").concat(password); // await sendEmailAsync(data.email, "no-reply@peacegroup.ng", subject, body);
+            //* Create Customer Credentials for User
 
-          case 24:
-            //* Create Customer Credentials for Staff
             title = data.title, surname = data.surname, otherName = data.otherName, gender = data.gender, birthDate = data.birthDate, photo = data.photo, phoneHome = data.phoneHome, address = data.address, state = data.state, county = data.county, country = data.country, kin = data.kin, kinPhone = data.kinPhone, kinAddress = data.kinAddress, terminal = data.terminal;
             customerData = {
               title: title,
@@ -221,29 +212,29 @@ function _createService() {
               state: state,
               county: county,
               country: country,
-              isStaff: true,
+              isUser: true,
               email: email,
               phone: phone,
               terminal: terminal
             };
             customerData.contactPerson = "".concat(kin, ", ").concat(kinAddress);
-            customerData.contactPersonPhone = kinPhone;
-            customer = (0, _services.postData)(jwtToken, "/erp/customers", customerData);
-            console.log(customer);
-            _context2.next = 35;
+            customerData.contactPersonPhone = kinPhone; // const customer = postData(jwtToken, "/erp/customers", customerData);
+            // console.log(customer);
+
+            _context2.next = 31;
             break;
 
-          case 32:
-            _context2.prev = 32;
+          case 28:
+            _context2.prev = 28;
             _context2.t0 = _context2["catch"](2);
             throw new Error("Error creating ".concat(_module, " record. ").concat(_context2.t0.message));
 
-          case 35:
+          case 31:
           case "end":
             return _context2.stop();
         }
       }
-    }, _callee2, null, [[2, 32]]);
+    }, _callee2, null, [[2, 28]]);
   }));
   return _createService.apply(this, arguments);
 }
@@ -378,7 +369,34 @@ function _patchService() {
 
 function deleteService(_x5) {
   return _deleteService.apply(this, arguments);
-}
+} // export async function sendOTPService(data = {}, jwtToken = "") {
+//     try {
+//         const { error } = schemaLogin.validate(data);
+//         if (error) throw new Error("Invalid paramater: require both Email & Phone for OTP");
+//         const { phone, email } = data;
+//         const otp = generateOtp();
+//         const update = {
+//             otp: hash(otp.toString()),
+//             $inc: { otpCount: 1 },
+//             otpAccess: true,
+//         };
+//         const q = { $and: [{ email }, { phone }] };
+//         const result = await User.findOneAndUpdate(q, update, { new: true }).exec();
+//         if (!result) {
+//             throw new Error(`User not found with phone ${phone} & email ${email}`);
+//         }
+//         const msg = `Login to the App using this phone number and the OTP ${otp} -PEACEGROUP`;
+//         const sentSmsObject = await sendSmsAsync(msg, phone);
+//         const sentEmailObject = await emailForgotPassword(email, msg);
+//         // eslint-disable-next-line no-undef
+//         logger.info(sentSmsObject, sentEmailObject);
+//         return { sentSmsObject, sentEmailObject };
+//     } catch (err) {
+//         throw new Error(`Error sending ${module} record. ${err.message}`);
+//     }
+// }
+// eslint-disable-next-line complexity
+
 
 function _deleteService() {
   _deleteService = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee5(recordId) {
@@ -434,114 +452,9 @@ function _deleteService() {
   return _deleteService.apply(this, arguments);
 }
 
-function sendOTPService() {
-  return _sendOTPService.apply(this, arguments);
-} // eslint-disable-next-line complexity
-
-
-function _sendOTPService() {
-  _sendOTPService = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee6() {
-    var data,
-        jwtToken,
-        _schemaLogin$validate,
-        error,
-        phone,
-        email,
-        otp,
-        update,
-        q,
-        result,
-        msg,
-        sentSmsObject,
-        sentEmailObject,
-        _args6 = arguments;
-
-    return regeneratorRuntime.wrap(function _callee6$(_context6) {
-      while (1) {
-        switch (_context6.prev = _context6.next) {
-          case 0:
-            data = _args6.length > 0 && _args6[0] !== undefined ? _args6[0] : {};
-            jwtToken = _args6.length > 1 && _args6[1] !== undefined ? _args6[1] : "";
-            _context6.prev = 2;
-            _schemaLogin$validate = _model.schemaLogin.validate(data), error = _schemaLogin$validate.error;
-
-            if (!error) {
-              _context6.next = 6;
-              break;
-            }
-
-            throw new Error("Invalid paramater: require both Email & Phone for OTP");
-
-          case 6:
-            phone = data.phone, email = data.email;
-            otp = (0, _util.generateOtp)();
-            update = {
-              otp: (0, _util.hash)(otp.toString()),
-              $inc: {
-                otpCount: 1
-              },
-              otpAccess: true
-            };
-            q = {
-              $and: [{
-                email: email
-              }, {
-                phone: phone
-              }]
-            };
-            _context6.next = 12;
-            return _model["default"].findOneAndUpdate(q, update, {
-              "new": true
-            }).exec();
-
-          case 12:
-            result = _context6.sent;
-
-            if (result) {
-              _context6.next = 15;
-              break;
-            }
-
-            throw new Error("User not found with phone ".concat(phone, " & email ").concat(email));
-
-          case 15:
-            msg = "Login to the App using this phone number and the OTP ".concat(otp, " -PEACEGROUP");
-            _context6.next = 18;
-            return (0, _services.sendSmsAsync)(msg, phone);
-
-          case 18:
-            sentSmsObject = _context6.sent;
-            _context6.next = 21;
-            return (0, _services.emailForgotPassword)(email, msg);
-
-          case 21:
-            sentEmailObject = _context6.sent;
-            // eslint-disable-next-line no-undef
-            logger.info(sentSmsObject, sentEmailObject);
-            return _context6.abrupt("return", {
-              sentSmsObject: sentSmsObject,
-              sentEmailObject: sentEmailObject
-            });
-
-          case 26:
-            _context6.prev = 26;
-            _context6.t0 = _context6["catch"](2);
-            throw new Error("Error sending ".concat(_module, " record. ").concat(_context6.t0.message));
-
-          case 29:
-          case "end":
-            return _context6.stop();
-        }
-      }
-    }, _callee6, null, [[2, 26]]);
-  }));
-  return _sendOTPService.apply(this, arguments);
-}
-
 function getLoginType(data) {
   var email = data.email,
       phone = data.phone,
-      otp = data.otp,
       password = data.password;
   var loginType = "";
 
@@ -549,136 +462,107 @@ function getLoginType(data) {
     loginType = "EMAIL";
   } else if (phone && password) {
     loginType = "PHONE";
-  } else if (phone && otp) {
-    loginType = "OTP";
-  }
+  } // else if (phone && otp) {
+  //     loginType = "OTP";
+  // }
+
 
   return loginType;
 } // eslint-disable-next-line complexity
-
-
-function updateApprovalService(_x6) {
-  return _updateApprovalService.apply(this, arguments);
-} // eslint-disable-next-line consistent-return
+// export async function updateApprovalService(recordId, data = {}, jwtToken = "") {
+//     try {
+//         const userId = data.updatedBy;
+//         const { status, approvalRemark, accessLevel } = data;
+//         const record = { status, approvalRemark, accessLevel };
+//         if (recordId === "5a51bc91860d8b5ba0001000") throw new Error("Cannot alter User record");
+//         const { error } = schemaApproval.validate(data);
+//         if (error) throw new Error(`Error validating ${module} data. ${error.message}`);
+//         const User = await User.findById(recordId).exec();
+//         if (User.deleted) throw new Error(`Error approving ${module} record. It was deleted since ${User.deletedAt}`);
+//         switch (data.status) {
+//         case "APPROVED":
+//             record.approvedBy = userId;
+//             record.approvedDate = Date.now();
+//             break;
+//         case "REJECTED":
+//             record.rejectedBy = userId;
+//             record.rejectedDate = Date.now();
+//             break;
+//         default:
+//         }
+//         const result = await User.findOneAndUpdate({ _id: recordId }, record, { new: true });
+//         if (!result) {
+//             throw new Error(`${module} record not found.`);
+//         }
+//     } catch (err) {
+//         throw new Error(`Error updating ${module} record. ${err.message}`);
+//     }
+// }
+// eslint-disable-next-line consistent-return
 // eslint-disable-next-line complexity
+// export async function updateEmploymentService(recordId, data = {}, jwtToken = "") {
+//     try {
+//         const userId = data.updatedBy;
+//         const { employment, employmentRemark } = data;
+//         const record = { employment, employmentRemark };
+//         if (recordId === "5a51bc91860d8b5ba0001000") throw new Error("Cannot alter User record");
+//         const { error } = schemaEmployment.validate(data);
+//         if (error) throw new Error(`Error validating ${module} data. ${error.message}`);
+//         const User = await User.findById(recordId).exec();
+//         if (User.deleted) throw new Error(`Error approving ${module} record. It was deleted since ${User.deletedAt}`);
+//         switch (data.employment) {
+//         case "EMPLOYED":
+//             record.employedBy = userId;
+//             record.employedDate = Date.now();
+//             record.accessLevel = 1;
+//             break;
+//         case "FULLTIME":
+//             record.fulltimedBy = userId;
+//             record.fulltimedDate = Date.now();
+//             break;
+//         case "PARTTIME":
+//             record.parttimedBy = userId;
+//             record.parttimedDate = Date.now();
+//             break;
+//         case "LEAVE":
+//             record.leaveBy = userId;
+//             record.leaveDate = Date.now();
+//             record.accessLevel = 1;
+//             break;
+//         case "PROBATED":
+//             record.probatedBy = userId;
+//             record.probatedDate = Date.now();
+//             record.accessLevel = 1;
+//             break;
+//         case "SUSPENDED":
+//             record.suspendedBy = userId;
+//             record.suspendedDate = Date.now();
+//             record.isSalaryPayable = false;
+//             record.accessLevel = 0;
+//             break;
+//         case "RETIRED":
+//             record.retiredBy = userId;
+//             record.retiredDate = Date.now();
+//             record.isSalaryPayable = false;
+//             record.accessLevel = 0;
+//             break;
+//         case "DISENGAGED":
+//             record.disengagedBy = userId;
+//             record.disengagedDate = Date.now();
+//             record.isSalaryPayable = false;
+//             record.accessLevel = 0;
+//             break;
+//         default:
+//         }
+//         const result = await updateService(recordId, data);
+//         if (!result) {
+//             throw new Error(`${module} record not found.`);
+//         }
+//     } catch (err) {
+//         throw new Error(`Error updating ${module} record. ${err.message}`);
+//     }
+// }
 
-
-function _updateApprovalService() {
-  _updateApprovalService = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee7(recordId) {
-    var data,
-        jwtToken,
-        userId,
-        status,
-        approvalRemark,
-        accessLevel,
-        record,
-        _schemaApproval$valid,
-        error,
-        staff,
-        result,
-        _args7 = arguments;
-
-    return regeneratorRuntime.wrap(function _callee7$(_context7) {
-      while (1) {
-        switch (_context7.prev = _context7.next) {
-          case 0:
-            data = _args7.length > 1 && _args7[1] !== undefined ? _args7[1] : {};
-            jwtToken = _args7.length > 2 && _args7[2] !== undefined ? _args7[2] : "";
-            _context7.prev = 2;
-            userId = data.updatedBy;
-            status = data.status, approvalRemark = data.approvalRemark, accessLevel = data.accessLevel;
-            record = {
-              status: status,
-              approvalRemark: approvalRemark,
-              accessLevel: accessLevel
-            };
-
-            if (!(recordId === "5a51bc91860d8b5ba0001000")) {
-              _context7.next = 8;
-              break;
-            }
-
-            throw new Error("Cannot alter staff record");
-
-          case 8:
-            _schemaApproval$valid = _model.schemaApproval.validate(data), error = _schemaApproval$valid.error;
-
-            if (!error) {
-              _context7.next = 11;
-              break;
-            }
-
-            throw new Error("Error validating ".concat(_module, " data. ").concat(error.message));
-
-          case 11:
-            _context7.next = 13;
-            return _model["default"].findById(recordId).exec();
-
-          case 13:
-            staff = _context7.sent;
-
-            if (!staff.deleted) {
-              _context7.next = 16;
-              break;
-            }
-
-            throw new Error("Error approving ".concat(_module, " record. It was deleted since ").concat(staff.deletedAt));
-
-          case 16:
-            _context7.t0 = data.status;
-            _context7.next = _context7.t0 === "APPROVED" ? 19 : _context7.t0 === "REJECTED" ? 22 : 25;
-            break;
-
-          case 19:
-            record.approvedBy = userId;
-            record.approvedDate = Date.now();
-            return _context7.abrupt("break", 25);
-
-          case 22:
-            record.rejectedBy = userId;
-            record.rejectedDate = Date.now();
-            return _context7.abrupt("break", 25);
-
-          case 25:
-            _context7.next = 27;
-            return _model["default"].findOneAndUpdate({
-              _id: recordId
-            }, record, {
-              "new": true
-            });
-
-          case 27:
-            result = _context7.sent;
-
-            if (result) {
-              _context7.next = 30;
-              break;
-            }
-
-            throw new Error("".concat(_module, " record not found."));
-
-          case 30:
-            _context7.next = 35;
-            break;
-
-          case 32:
-            _context7.prev = 32;
-            _context7.t1 = _context7["catch"](2);
-            throw new Error("Error updating ".concat(_module, " record. ").concat(_context7.t1.message));
-
-          case 35:
-          case "end":
-            return _context7.stop();
-        }
-      }
-    }, _callee7, null, [[2, 32]]);
-  }));
-  return _updateApprovalService.apply(this, arguments);
-}
-
-function updateEmploymentService(_x7) {
-  return _updateEmploymentService.apply(this, arguments);
-}
 /*
 export async function createRecord(req, res) {
     try {
@@ -709,169 +593,23 @@ export async function createRecord(req, res) {
 // eslint-disable-next-line complexity
 
 
-function _updateEmploymentService() {
-  _updateEmploymentService = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee8(recordId) {
-    var data,
-        jwtToken,
-        userId,
-        employment,
-        employmentRemark,
-        record,
-        _schemaEmployment$val,
-        error,
-        staff,
-        result,
-        _args8 = arguments;
-
-    return regeneratorRuntime.wrap(function _callee8$(_context8) {
-      while (1) {
-        switch (_context8.prev = _context8.next) {
-          case 0:
-            data = _args8.length > 1 && _args8[1] !== undefined ? _args8[1] : {};
-            jwtToken = _args8.length > 2 && _args8[2] !== undefined ? _args8[2] : "";
-            _context8.prev = 2;
-            userId = data.updatedBy;
-            employment = data.employment, employmentRemark = data.employmentRemark;
-            record = {
-              employment: employment,
-              employmentRemark: employmentRemark
-            };
-
-            if (!(recordId === "5a51bc91860d8b5ba0001000")) {
-              _context8.next = 8;
-              break;
-            }
-
-            throw new Error("Cannot alter staff record");
-
-          case 8:
-            _schemaEmployment$val = _model.schemaEmployment.validate(data), error = _schemaEmployment$val.error;
-
-            if (!error) {
-              _context8.next = 11;
-              break;
-            }
-
-            throw new Error("Error validating ".concat(_module, " data. ").concat(error.message));
-
-          case 11:
-            _context8.next = 13;
-            return _model["default"].findById(recordId).exec();
-
-          case 13:
-            staff = _context8.sent;
-
-            if (!staff.deleted) {
-              _context8.next = 16;
-              break;
-            }
-
-            throw new Error("Error approving ".concat(_module, " record. It was deleted since ").concat(staff.deletedAt));
-
-          case 16:
-            _context8.t0 = data.employment;
-            _context8.next = _context8.t0 === "EMPLOYED" ? 19 : _context8.t0 === "FULLTIME" ? 23 : _context8.t0 === "PARTTIME" ? 26 : _context8.t0 === "LEAVE" ? 29 : _context8.t0 === "PROBATED" ? 33 : _context8.t0 === "SUSPENDED" ? 37 : _context8.t0 === "RETIRED" ? 42 : _context8.t0 === "DISENGAGED" ? 47 : 52;
-            break;
-
-          case 19:
-            record.employedBy = userId;
-            record.employedDate = Date.now();
-            record.accessLevel = 1;
-            return _context8.abrupt("break", 52);
-
-          case 23:
-            record.fulltimedBy = userId;
-            record.fulltimedDate = Date.now();
-            return _context8.abrupt("break", 52);
-
-          case 26:
-            record.parttimedBy = userId;
-            record.parttimedDate = Date.now();
-            return _context8.abrupt("break", 52);
-
-          case 29:
-            record.leaveBy = userId;
-            record.leaveDate = Date.now();
-            record.accessLevel = 1;
-            return _context8.abrupt("break", 52);
-
-          case 33:
-            record.probatedBy = userId;
-            record.probatedDate = Date.now();
-            record.accessLevel = 1;
-            return _context8.abrupt("break", 52);
-
-          case 37:
-            record.suspendedBy = userId;
-            record.suspendedDate = Date.now();
-            record.isSalaryPayable = false;
-            record.accessLevel = 0;
-            return _context8.abrupt("break", 52);
-
-          case 42:
-            record.retiredBy = userId;
-            record.retiredDate = Date.now();
-            record.isSalaryPayable = false;
-            record.accessLevel = 0;
-            return _context8.abrupt("break", 52);
-
-          case 47:
-            record.disengagedBy = userId;
-            record.disengagedDate = Date.now();
-            record.isSalaryPayable = false;
-            record.accessLevel = 0;
-            return _context8.abrupt("break", 52);
-
-          case 52:
-            _context8.next = 54;
-            return updateService(recordId, data);
-
-          case 54:
-            result = _context8.sent;
-
-            if (result) {
-              _context8.next = 57;
-              break;
-            }
-
-            throw new Error("".concat(_module, " record not found."));
-
-          case 57:
-            _context8.next = 62;
-            break;
-
-          case 59:
-            _context8.prev = 59;
-            _context8.t1 = _context8["catch"](2);
-            throw new Error("Error updating ".concat(_module, " record. ").concat(_context8.t1.message));
-
-          case 62:
-          case "end":
-            return _context8.stop();
-        }
-      }
-    }, _callee8, null, [[2, 59]]);
-  }));
-  return _updateEmploymentService.apply(this, arguments);
-}
-
-function loginService(_x8) {
+function loginService(_x6) {
   return _loginService.apply(this, arguments);
 }
 
 function _loginService() {
-  _loginService = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee9(loginPayload) {
-    var _schemaLogin$validate2, error, email, phone, otp, password, type, filter, user, update, payload, token;
+  _loginService = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee6(loginPayload) {
+    var _schemaLogin$validate, error, email, phone, otp, password, type, filter, user, update, payload, token;
 
-    return regeneratorRuntime.wrap(function _callee9$(_context9) {
+    return regeneratorRuntime.wrap(function _callee6$(_context6) {
       while (1) {
-        switch (_context9.prev = _context9.next) {
+        switch (_context6.prev = _context6.next) {
           case 0:
-            _context9.prev = 0;
-            _schemaLogin$validate2 = _model.schemaLogin.validate(loginPayload), error = _schemaLogin$validate2.error;
+            _context6.prev = 0;
+            _schemaLogin$validate = _model.schemaLogin.validate(loginPayload), error = _schemaLogin$validate.error;
 
             if (!error) {
-              _context9.next = 4;
+              _context6.next = 4;
               break;
             }
 
@@ -879,7 +617,7 @@ function _loginService() {
 
           case 4:
             if (getLoginType(loginPayload)) {
-              _context9.next = 6;
+              _context6.next = 6;
               break;
             }
 
@@ -895,7 +633,7 @@ function _loginService() {
               filter.email = email;
             }
 
-            _context9.next = 11;
+            _context6.next = 11;
             return _model["default"].findOne(filter).populate({
               path: "role",
               select: "name permissions",
@@ -917,10 +655,10 @@ function _loginService() {
             }).select("-createdBy -updatedBy").exec();
 
           case 11:
-            user = _context9.sent;
+            user = _context6.sent;
 
             if (user) {
-              _context9.next = 14;
+              _context6.next = 14;
               break;
             }
 
@@ -928,7 +666,7 @@ function _loginService() {
 
           case 14:
             if (user.accessLevel > 1) {
-              _context9.next = 16;
+              _context6.next = 16;
               break;
             }
 
@@ -936,12 +674,12 @@ function _loginService() {
 
           case 16:
             if (!(type === "OTP")) {
-              _context9.next = 23;
+              _context6.next = 23;
               break;
             }
 
             if (user.otpAccess) {
-              _context9.next = 19;
+              _context6.next = 19;
               break;
             }
 
@@ -949,19 +687,19 @@ function _loginService() {
 
           case 19:
             if (_bcryptjs["default"].compareSync(otp, user.otp.toString())) {
-              _context9.next = 21;
+              _context6.next = 21;
               break;
             }
 
             throw new Error("Invalid OTP credentials.");
 
           case 21:
-            _context9.next = 25;
+            _context6.next = 25;
             break;
 
           case 23:
             if (_bcryptjs["default"].compareSync(password, user.password)) {
-              _context9.next = 25;
+              _context6.next = 25;
               break;
             }
 
@@ -975,7 +713,7 @@ function _loginService() {
               lastLogin: user.currentLogin,
               lastIp: user.currentIp
             };
-            _context9.next = 28;
+            _context6.next = 28;
             return _model["default"].findOneAndUpdate({
               _id: user._id
             }, update, {
@@ -990,7 +728,7 @@ function _loginService() {
             delete user.otp;
             payload = {
               id: user.id,
-              userType: "staff",
+              userType: "User",
               terminal: user.terminal,
               subsidiary: user.subsidiary,
               role: user.role,
@@ -1003,22 +741,22 @@ function _loginService() {
               expiresIn: "240h" // JWT.tokenExpireTime,
 
             });
-            return _context9.abrupt("return", {
+            return _context6.abrupt("return", {
               token: token,
               user: user
             });
 
           case 37:
-            _context9.prev = 37;
-            _context9.t0 = _context9["catch"](0);
-            throw new Error("Authentication failed: ".concat(_context9.t0.message));
+            _context6.prev = 37;
+            _context6.t0 = _context6["catch"](0);
+            throw new Error("Authentication failed: ".concat(_context6.t0.message));
 
           case 40:
           case "end":
-            return _context9.stop();
+            return _context6.stop();
         }
       }
-    }, _callee9, null, [[0, 37]]);
+    }, _callee6, null, [[0, 37]]);
   }));
   return _loginService.apply(this, arguments);
 }
@@ -1032,35 +770,35 @@ function updateTerminalIdService() {
 }
 
 function _updateTerminalIdService() {
-  _updateTerminalIdService = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee11() {
+  _updateTerminalIdService = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee8() {
     var list, resolvedArray;
-    return regeneratorRuntime.wrap(function _callee11$(_context11) {
+    return regeneratorRuntime.wrap(function _callee8$(_context8) {
       while (1) {
-        switch (_context11.prev = _context11.next) {
+        switch (_context8.prev = _context8.next) {
           case 0:
-            _context11.prev = 0;
-            _context11.next = 3;
+            _context8.prev = 0;
+            _context8.next = 3;
             return _model["default"].find({}).exec();
 
           case 3:
-            list = _context11.sent;
-            _context11.next = 6;
+            list = _context8.sent;
+            _context8.next = 6;
             return Promise.all(list.map( /*#__PURE__*/function () {
-              var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee10(data) {
+              var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee7(data) {
                 var rec;
-                return regeneratorRuntime.wrap(function _callee10$(_context10) {
+                return regeneratorRuntime.wrap(function _callee7$(_context7) {
                   while (1) {
-                    switch (_context10.prev = _context10.next) {
+                    switch (_context7.prev = _context7.next) {
                       case 0:
                         if (!(data.subsidiary === "PMT")) {
-                          _context10.next = 8;
+                          _context7.next = 8;
                           break;
                         }
 
-                        console.log("\nOld Staff ===> ", data);
+                        console.log("\nOld User ===> ", data);
                         data.terminal = remakeId(data.terminal.toString());
-                        console.log("\nNew Staff ===> ", data);
-                        _context10.next = 6;
+                        console.log("\nNew User ===> ", data);
+                        _context7.next = 6;
                         return _model["default"].findOneAndUpdate({
                           _id: data.id
                         }, data, {
@@ -1068,41 +806,41 @@ function _updateTerminalIdService() {
                         });
 
                       case 6:
-                        rec = _context10.sent;
-                        return _context10.abrupt("return", rec);
+                        rec = _context7.sent;
+                        return _context7.abrupt("return", rec);
 
                       case 8:
-                        return _context10.abrupt("return", data);
+                        return _context7.abrupt("return", data);
 
                       case 9:
                       case "end":
-                        return _context10.stop();
+                        return _context7.stop();
                     }
                   }
-                }, _callee10);
+                }, _callee7);
               }));
 
-              return function (_x9) {
+              return function (_x7) {
                 return _ref.apply(this, arguments);
               };
             }()));
 
           case 6:
-            resolvedArray = _context11.sent;
-            _context11.next = 12;
+            resolvedArray = _context8.sent;
+            _context8.next = 12;
             break;
 
           case 9:
-            _context11.prev = 9;
-            _context11.t0 = _context11["catch"](0);
-            throw new Error("Error creating ".concat(_module, " record. ").concat(_context11.t0.message));
+            _context8.prev = 9;
+            _context8.t0 = _context8["catch"](0);
+            throw new Error("Error creating ".concat(_module, " record. ").concat(_context8.t0.message));
 
           case 12:
           case "end":
-            return _context11.stop();
+            return _context8.stop();
         }
       }
-    }, _callee11, null, [[0, 9]]);
+    }, _callee8, null, [[0, 9]]);
   }));
   return _updateTerminalIdService.apply(this, arguments);
 }

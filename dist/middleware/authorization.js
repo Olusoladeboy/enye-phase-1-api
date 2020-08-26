@@ -5,8 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.getToken = getToken;
 exports.checkAuth = checkAuth;
-exports.isValidStaff = isValidStaff;
-exports.isAuthorized = isAuthorized;
+exports.isValidUser = isValidUser;
 
 var _dotenv = _interopRequireDefault(require("dotenv"));
 
@@ -18,9 +17,8 @@ var _util = require("../util");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-_dotenv["default"].config();
-
-var logger = _util.log4js.getLogger("[".concat(module, "]")); // Retrieve token from request header
+_dotenv["default"].config(); // const logger = log4js.getLogger(`[${module}]`);
+// Retrieve token from request header
 
 
 function getToken(req) {
@@ -71,74 +69,58 @@ function checkAuth(req, res, next) {
   }
 }
 
-function isValidStaff(req, res, next) {
+function isValidUser(req, res, next) {
   try {
     var _req$user = req.user,
         userType = _req$user.userType,
         id = _req$user.id,
         email = _req$user.email,
-        terminal = _req$user.terminal,
-        phone = _req$user.phone,
-        role = _req$user.role;
-    if (userType !== "staff") return (0, _util.fail)(res, 403, "Invalid Staff credentials!");
-    console.log("\nValidating userType ".concat(userType, ", id ").concat(id, ", email ").concat(email, ", \n        Terminal ").concat((0, _util.safeGet)(terminal, "name"), ", phone ").concat(phone, ", role ").concat((0, _util.safeGet)(role, "name")));
-    if (email === "admin@peacegroup.ng" || (0, _util.safeGet)(role, "name") === "SUPER_ADMIN") return next();
-    if (!role) return (0, _util.fail)(res, 403, "Invalid User credentials! No user-role found"); // return next();
+        phone = _req$user.phone;
+    if (userType !== "User") return (0, _util.fail)(res, 403, "Invalid User credentials!");
+    console.log("\nValidating userType ".concat(userType, ", id ").concat(id, ", email ").concat(email, ", phone ").concat(phone)); // if (email === "admin@peacegroup.ng" || safeGet(role, "name") === "SUPER_ADMIN") return next();
+    // if (!role) return fail(res, 403, "Invalid User credentials! No user-role found");
 
-    return isAuthorized(req, res, next);
+    return next(); // return isAuthorized(req, res,next);
   } catch (err) {
-    logger.error("[400] [".concat((0, _util.getRequestIp)(req), "] [").concat(req.method, "] [").concat((0, _util.safeGet)(req.user, "email"), "] - [").concat(req.path, "], [Authentication], ").concat(err.message));
+    // logger.error(`[400] [${getRequestIp(req)}] [${req.method}] [${safeGet(req.user, "email")}] - [${req.path}], [Authentication], ${err.message}`);
     return (0, _util.fail)(res, 403, "User not Validated! ".concat(err.message));
   }
-}
-
-function isAuthorized(req, res, next) {
-  try {
-    var reqAction;
-    var path = req.path,
-        method = req.method;
-
-    switch (method) {
-      case "POST":
-        reqAction = "CREATE";
-        break;
-
-      case "PUT":
-        reqAction = "UPDATE";
-        break;
-
-      case "PATCH":
-        reqAction = "HIDE";
-        break;
-
-      case "DELETE":
-        reqAction = "DELETE";
-        break;
-
-      case "GET":
-        reqAction = "READ";
-        break;
-
-      default:
-        reqAction = "READ";
-        break;
-    }
-
-    var _req$user$role = req.user.role,
-        roleName = _req$user$role.name,
-        permissionArray = _req$user$role.permissions;
-    if (roleName === "SUPER_ADMIN") return next();
-    var resource = path.split("/", 2)[1].replace(/-/g, "").replace(/s$/, "").toUpperCase();
-    var requiredPermission = "".concat(reqAction, "_").concat(resource);
-    if (!permissionArray) return (0, _util.fail)(res, 403, "Invalid User credentials! No permission found - 101");
-    var permissionRecords = permissionArray.find(function (item) {
-      return item.name === requiredPermission;
-    });
-    var msg = "Invalid credentials! Role ".concat(roleName, " lacks permission ").concat(requiredPermission);
-    if (!permissionRecords) return (0, _util.fail)(res, 403, msg);
-    return next();
-  } catch (err) {
-    logger.error("[400] [".concat((0, _util.getRequestIp)(req), "] [").concat(req.method, "] [").concat((0, _util.safeGet)(req.user, "email"), "] - [").concat(req.path, "], [Authentication], ").concat(err.message));
-    return (0, _util.fail)(res, 403, "User not Authorized! ".concat(err.message));
-  }
-}
+} // export function isAuthorized(req, res, next) {
+//     try {
+//         let reqAction;
+//         const { path, method } = req;
+//         switch (method) {
+//             case "POST":
+//                 reqAction = "CREATE";
+//                 break;
+//             case "PUT":
+//                 reqAction = "UPDATE";
+//                 break;
+//             case "PATCH":
+//                 reqAction = "HIDE";
+//                 break;
+//             case "DELETE":
+//                 reqAction = "DELETE";
+//                 break;
+//             case "GET":
+//                 reqAction = "READ";
+//                 break;
+//             default:
+//                 reqAction = "READ";
+//                 break;
+//         }
+//         const { name: roleName, permissions: permissionArray } = req.user.role;
+//         if (roleName === "SUPER_ADMIN") return next();
+//         const resource = path.split("/", 2)[1].replace(/-/g, "").replace(/s$/, "").toUpperCase();
+//         const requiredPermission = `${reqAction}_${resource}`;
+//         if (!permissionArray) return fail(res, 403, "Invalid User credentials! No permission found - 101");
+//         const permissionRecords = permissionArray.find(item => item.name === requiredPermission);
+//         const msg = `Invalid credentials! Role ${roleName} lacks permission ${requiredPermission}`;
+//         if (!permissionRecords) return fail(res, 403, msg);
+//         return next();
+//     }
+//     catch (err) {
+//         logger.error(`[400] [${getRequestIp(req)}] [${req.method}] [${safeGet(req.user, "email")}] - [${req.path}], [Authentication], ${err.message}`);
+//         return fail(res, 403, `User not Authorized! ${err.message}`);
+//     }
+// }

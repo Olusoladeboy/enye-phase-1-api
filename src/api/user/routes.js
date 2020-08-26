@@ -1,5 +1,5 @@
 import express from "express";
-import { checkAuth, isValidUser } from "../../../middleware/authorization";
+import { checkAuth, isValidUser } from "../../middleware/authorization";
 import {
     fetchHandler,
     createHandler,
@@ -33,7 +33,8 @@ const router = express.Router();
  * @apiSuccess {Object[]} Array of Objects of records.
  * @apiError {Object} 400 Some parameters may contain invalid values.
  */
-router.get("/user", [checkAuth, isValidUser], fetchHandler);
+// router.get("/user", [checkAuth, isValidUser], fetchHandler);
+router.get("/user", fetchHandler);
 
 /**
  * @api {post} /api/user Create a User record

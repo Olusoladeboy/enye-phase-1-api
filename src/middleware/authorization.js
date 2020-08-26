@@ -7,7 +7,6 @@ dotenv.config();
 
 const logger = log4js.getLogger(`[${module}]`);
 
-
 // Retrieve token from request header
 export function getToken(req) {
     if (req.headers.authorization && req.headers.authorization.split(" ")[0] === "Bearer") {
@@ -58,16 +57,15 @@ export function checkAuth(req, res, next) {
     }
 }
 
-export function isValidStaff(req, res, next) {
+export function isValidUser(req, res, next) {
     try {
-        const { userType, id, email, terminal, phone, role } = req.user;
-        if (userType !== "staff") return fail(res, 403, "Invalid Staff credentials!");
-        console.log(`\nValidating userType ${userType}, id ${id}, email ${email}, 
-        Terminal ${safeGet(terminal, "name")}, phone ${phone}, role ${safeGet(role, "name")}`);
-        if (email === "admin@peacegroup.ng" || safeGet(role, "name") === "SUPER_ADMIN") return next();
-        if (!role) return fail(res, 403, "Invalid User credentials! No user-role found");
-        // return next();
-        return isAuthorized(req, res, next);
+        const { userType, id, email, phone } = req.user;
+        if (userType !== "User") return fail(res, 403, "Invalid User credentials!");
+        console.log(`\nValidating userType ${userType}, id ${id}, email ${email}, phone ${phone}`);
+        // if (email === "admin@peacegroup.ng" || safeGet(role, "name") === "SUPER_ADMIN") return next();
+        // if (!role) return fail(res, 403, "Invalid User credentials! No user-role found");
+        return next();
+        // return isAuthorized(req, res,next);
     }
     catch (err) {
         logger.error(`[400] [${getRequestIp(req)}] [${req.method}] [${safeGet(req.user, "email")}] - [${req.path}], [Authentication], ${err.message}`);
@@ -75,42 +73,42 @@ export function isValidStaff(req, res, next) {
     }
 }
 
-export function isAuthorized(req, res, next) {
-    try {
-        let reqAction;
-        const { path, method } = req;
-        switch (method) {
-            case "POST":
-                reqAction = "CREATE";
-                break;
-            case "PUT":
-                reqAction = "UPDATE";
-                break;
-            case "PATCH":
-                reqAction = "HIDE";
-                break;
-            case "DELETE":
-                reqAction = "DELETE";
-                break;
-            case "GET":
-                reqAction = "READ";
-                break;
-            default:
-                reqAction = "READ";
-                break;
-        }
-        const { name: roleName, permissions: permissionArray } = req.user.role;
-        if (roleName === "SUPER_ADMIN") return next();
-        const resource = path.split("/", 2)[1].replace(/-/g, "").replace(/s$/, "").toUpperCase();
-        const requiredPermission = `${reqAction}_${resource}`;
-        if (!permissionArray) return fail(res, 403, "Invalid User credentials! No permission found - 101");
-        const permissionRecords = permissionArray.find(item => item.name === requiredPermission);
-        const msg = `Invalid credentials! Role ${roleName} lacks permission ${requiredPermission}`;
-        if (!permissionRecords) return fail(res, 403, msg);
-        return next();
-    }
-    catch (err) {
-        logger.error(`[400] [${getRequestIp(req)}] [${req.method}] [${safeGet(req.user, "email")}] - [${req.path}], [Authentication], ${err.message}`);
-        return fail(res, 403, `User not Authorized! ${err.message}`);
-    }
-}
+// export function isAuthorized(req, res, next) {
+//     try {
+//         let reqAction;
+//         const { path, method } = req;
+//         switch (method) {
+//             case "POST":
+//                 reqAction = "CREATE";
+//                 break;
+//             case "PUT":
+//                 reqAction = "UPDATE";
+//                 break;
+//             case "PATCH":
+//                 reqAction = "HIDE";
+//                 break;
+//             case "DELETE":
+//                 reqAction = "DELETE";
+//                 break;
+//             case "GET":
+//                 reqAction = "READ";
+//                 break;
+//             default:
+//                 reqAction = "READ";
+//                 break;
+//         }
+//         const { name: roleName, permissions: permissionArray } = req.user.role;
+//         if (roleName === "SUPER_ADMIN") return next();
+//         const resource = path.split("/", 2)[1].replace(/-/g, "").replace(/s$/, "").toUpperCase();
+//         const requiredPermission = `${reqAction}_${resource}`;
+//         if (!permissionArray) return fail(res, 403, "Invalid User credentials! No permission found - 101");
+//         const permissionRecords = permissionArray.find(item => item.name === requiredPermission);
+//         const msg = `Invalid credentials! Role ${roleName} lacks permission ${requiredPermission}`;
+//         if (!permissionRecords) return fail(res, 403, msg);
+//         return next();
+//     }
+//     catch (err) {
+//         logger.error(`[400] [${getRequestIp(req)}] [${req.method}] [${safeGet(req.user, "email")}] - [${req.path}], [Authentication], ${err.message}`);
+//         return fail(res, 403, `User not Authorized! ${err.message}`);
+//     }
+// }

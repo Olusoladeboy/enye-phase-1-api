@@ -12,12 +12,12 @@ const mongooseOptions = {
 const getCredentials = () => {
     const development = {
         uri: process.env.MONGODB_URI_DEV,
-        options: Object.assign(mongooseOptions, { }),
+        options: Object.assign(mongooseOptions, {}),
     };
 
     const production = {
         uri: process.env.MONGODB_URI_PROD,
-        options: Object.assign(mongooseOptions, { }),
+        options: Object.assign(mongooseOptions, {}),
     };
 
     const test = {
@@ -27,17 +27,17 @@ const getCredentials = () => {
         }),
     };
     switch (process.env.NODE_ENV) {
-    case "development":
-        return development;
+        case "development":
+            return development;
 
-    case "production":
-        return production;
+        case "production":
+            return production;
 
-    case "test":
-        return test;
+        case "test":
+            return test;
 
-    default:
-        return production;
+        default:
+            return production;
     }
 };
 
