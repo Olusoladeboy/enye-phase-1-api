@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { fetchService, createService, updateService, patchService, deleteService, loginService, sendOTPService, updateApprovalService } from "./service";
 import { success, fail, safeGet, log4js, getRequestIp } from "../../../util";
 import { getToken } from "../../../middleware";
