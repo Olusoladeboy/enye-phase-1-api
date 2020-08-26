@@ -1,5 +1,5 @@
 import express from "express";
-import { checkAuth, isValidStaff } from "../../../middleware/authorization";
+import { checkAuth, isValidUser } from "../../../middleware/authorization";
 import {
     fetchHandler,
     createHandler,
@@ -11,350 +11,351 @@ import {
     updatePhotoHandler,
     updateApprovalHandler,
     updateEmploymentHandler,
-// eslint-disable-next-line import/named
-} from "./controller";
+    // eslint-disable-next-line import/named
+}
+from "./controller";
 
 const router = express.Router();
 
 /**
- * @api {get} /api/staff?id={recordId} Retrieve Staff records
- * @apiName RetrieveStaff
- * @apiGroup Staff
+ * @api {get} /api/user?id={recordId} Retrieve User records
+ * @apiName RetrieveUser
+ * @apiGroup User
  * @apiHeader {String} Authorization Bearer token
  * @apiExample {curl} Example usage for retieving a single record:
- *      curl -i api/staff?
+ *      curl -i api/user?
  * @apiParam {Object} filter query condition (optional)
  * @apiParam {Number} skip Number of records to offset by (optional)
  * @apiParam {Number} limit Maximum Number of records to retrieve (optional)
  * @apiParam {String} sort how records would be arranged in alphabet (optional)
  * @apiParam {String} projection list of record's attributes to retrieve (optional)
- * @apiDescription Records of staff distributed across terminals.
+ * @apiDescription Records of User distributed across terminals.
  * @apiSuccess {Object[]} Array of Objects of records.
  * @apiError {Object} 400 Some parameters may contain invalid values.
  */
-router.get("/staff", [checkAuth, isValidStaff], fetchHandler);
+router.get("/user", [checkAuth, isValidUser], fetchHandler);
 
 /**
- * @api {post} /api/staff Create a Staff record
- * @apiName CreateStaff
- * @apiGroup Staff
+ * @api {post} /api/user Create a User record
+ * @apiName CreateUser
+ * @apiGroup User
  * @apiHeader {String} Authorization Bearer token
- * @apiParam {String} serial Staff serial (optional)
- * @apiParam {ObjectId} category Staff Category (optional)
- * @apiParam {String} title Staff title (optional)
- * @apiParam {String} surname Staff surname (required)
- * @apiParam {String} otherName Staff other name (required)
- * @apiParam {String} gender Staff gender (required)
- * @apiParam {Date} birthDate Staff birth date (required)
- * @apiParam {String} maritalStatus Staff marital status (required)
- * @apiParam {Number} children Staff Number of children (optional)
- * @apiParam {String} phone Staff office phone (required)
- * @apiParam {String} phoneHome Staff phone personal (optional)
- * @apiParam {String} emailPersonal Staff personal email Address (optional)
- * @apiParam {String} address Staff address (optional)
- * @apiParam {String} village Staff village (optional)
- * @apiParam {ObjectId} state Staff state (required)
- * @apiParam {ObjectId} county Staff county (required)
- * @apiParam {String} country Staff country (required)
- * @apiParam {String} email Staff email (optional)
- * @apiParam {String} password Staff password (optional)
- * @apiParam {String} otp Staff otp (optional)
- * @apiParam {Number} otpCount Staff otp count (optional)
- * @apiParam {Boolean} otpAccess Staff OTP Access Status
- * @apiParam {String} kin Staff kin (required)
- * @apiParam {String} kinPhone Staff kin phone (required)
- * @apiParam {String} kinAddress Staff kin address (required)
- * @apiParam {String} guarantor1 Staff guarantor1 (required)
- * @apiParam {String} guarantor1Phone Staff guarantor1 phone (required)
- * @apiParam {String} guarantor1Address Staff guarantor1 address (required)
- * @apiParam {String} guarantor2 Staff guarantor2 (optional)
- * @apiParam {String} guarantor2Phone Staff guarantor2 phone (optional)
- * @apiParam {String} guarantor2Address Staff guarantor2 address (optional)
- * @apiParam {String} profession Staff profession (optional)
- * @apiParam {String} qualification Staff qualification (optional)
- * @apiParam {String} institution Staff institution (optional)
- * @apiParam {String} employment Staff employment status (required)
- * @apiParam {String} tin Staff tin Tax Identification Number
- * @apiParam {Number} annualIncome Staff annualIncome is Gross Annual  Income
- * @apiParam {Number} basicSalary Staff basicSalary is basic net monthly salary
- * @apiParam {Number} bonus Staff bonus non-recurrent monthly bonus added to salary
- * @apiParam {Number} entertainmentAllowance Staff entertainment allowance (optional)
- * @apiParam {Number} houseAllowance Staff house allowance (optional)
- * @apiParam {Number} lunchAllowance Staff lunch allowance (optional)
- * @apiParam {Number} medicalAllowance Staff medical allowance (optional)
- * @apiParam {Number} transportAllowance Staff transport allowance (optional)
- * @apiParam {Number} utilityAllowance Staff utility allowance (optional)
- * @apiParam {Number} welfareAllowance Staff welfare allowance (optional)
- * @apiParam {Number} pension Staff pension To encourage pension contribution the
+ * @apiParam {String} serial User serial (optional)
+ * @apiParam {ObjectId} category User Category (optional)
+ * @apiParam {String} title User title (optional)
+ * @apiParam {String} surname User surname (required)
+ * @apiParam {String} otherName User other name (required)
+ * @apiParam {String} gender User gender (required)
+ * @apiParam {Date} birthDate User birth date (required)
+ * @apiParam {String} maritalStatus User marital status (required)
+ * @apiParam {Number} children User Number of children (optional)
+ * @apiParam {String} phone User office phone (required)
+ * @apiParam {String} phoneHome User phone personal (optional)
+ * @apiParam {String} emailPersonal User personal email Address (optional)
+ * @apiParam {String} address User address (optional)
+ * @apiParam {String} village User village (optional)
+ * @apiParam {ObjectId} state User state (required)
+ * @apiParam {ObjectId} county User county (required)
+ * @apiParam {String} country User country (required)
+ * @apiParam {String} email User email (optional)
+ * @apiParam {String} password User password (optional)
+ * @apiParam {String} otp User otp (optional)
+ * @apiParam {Number} otpCount User otp count (optional)
+ * @apiParam {Boolean} otpAccess User OTP Access Status
+ * @apiParam {String} kin User kin (required)
+ * @apiParam {String} kinPhone User kin phone (required)
+ * @apiParam {String} kinAddress User kin address (required)
+ * @apiParam {String} guarantor1 User guarantor1 (required)
+ * @apiParam {String} guarantor1Phone User guarantor1 phone (required)
+ * @apiParam {String} guarantor1Address User guarantor1 address (required)
+ * @apiParam {String} guarantor2 User guarantor2 (optional)
+ * @apiParam {String} guarantor2Phone User guarantor2 phone (optional)
+ * @apiParam {String} guarantor2Address User guarantor2 address (optional)
+ * @apiParam {String} profession User profession (optional)
+ * @apiParam {String} qualification User qualification (optional)
+ * @apiParam {String} institution User institution (optional)
+ * @apiParam {String} employment User employment status (required)
+ * @apiParam {String} tin User tin Tax Identification Number
+ * @apiParam {Number} annualIncome User annualIncome is Gross Annual  Income
+ * @apiParam {Number} basicSalary User basicSalary is basic net monthly salary
+ * @apiParam {Number} bonus User bonus non-recurrent monthly bonus added to salary
+ * @apiParam {Number} entertainmentAllowance User entertainment allowance (optional)
+ * @apiParam {Number} houseAllowance User house allowance (optional)
+ * @apiParam {Number} lunchAllowance User lunch allowance (optional)
+ * @apiParam {Number} medicalAllowance User medical allowance (optional)
+ * @apiParam {Number} transportAllowance User transport allowance (optional)
+ * @apiParam {Number} utilityAllowance User utility allowance (optional)
+ * @apiParam {Number} welfareAllowance User welfare allowance (optional)
+ * @apiParam {Number} pension User pension To encourage pension contribution the
  *  Government allows employees to contribute more than 8% of your basic, housing,
  *  and transport as a pension contribution.
  *  By doing so, you get more tax reliefs, thus lower taxable income.
- * @apiParam {Number} assurance Staff Life Assurance premiums are those premiums you pay
+ * @apiParam {Number} assurance User Life Assurance premiums are those premiums you pay
  *  towards insuring an immediate family member in the event that you die.
  *  There is no limit to how much you can contribute and how much relief you can get from it.
- * @apiParam {ObjectId} bank Staff bank (optional)
- * @apiParam {String} bankAccountNumber Staff bank account number (optional)
- * @apiParam {String} bankAccountName Staff bank account name (optional)
- * @apiParam {String} rank Staff rank (optional)
- * @apiParam {ObjectId} office Staff office
- * @apiParam {ObjectId} role Staff role is an array of permissions the office demands
- * @apiParam {ObjectId} superior Staff superior id (required)
- * @apiParam {String} subsidiary Staff subsidiary (required)
- * @apiParam {ObjectId} terminal Staff terminal (required)
- * @apiParam {ObjectId} currentVehicle Staff currentVehicle (optional)
+ * @apiParam {ObjectId} bank User bank (optional)
+ * @apiParam {String} bankAccountNumber User bank account number (optional)
+ * @apiParam {String} bankAccountName User bank account name (optional)
+ * @apiParam {String} rank User rank (optional)
+ * @apiParam {ObjectId} office User office
+ * @apiParam {ObjectId} role User role is an array of permissions the office demands
+ * @apiParam {ObjectId} superior User superior id (required)
+ * @apiParam {String} subsidiary User subsidiary (required)
+ * @apiParam {ObjectId} terminal User terminal (required)
+ * @apiParam {ObjectId} currentVehicle User currentVehicle (optional)
  * @apiParam {Array} assignments array of Objects of Asset Assigmnet History
  * managed my Asset Manager (prohibited)
- * @apiParam {Boolean} isAssignedVehicle Staff is assigned a vehicle
- * @apiParam {String} notice Staff notice (optional)
- * @apiParam {Array} ratings Staff ratings (optional)
- * @apiParam {Array} notifications Staff notifications
- * @apiParam {String} remark Staff remark (optional)
- * @apiParam {String} photo Staff photo (optional)
- * @apiParam {Boolean} isSalaryPayable Staff is salary payable (optional)
- * @apiParam {Boolean} isDocumentComplete Staff is document complete (optional)
- * @apiParam {Number} accessLevel Staff access level 0 - 9 Max. Zero implies No access (optional)
- * @apiParam {ObjectId} approvedBy Staff approved by (optional)
- * @apiParam {Date} approvedDate Staff approved date (optional)
- * @apiParam {Date} employedDate Staff employed date (optional)
- * @apiParam {ObjectId} employedBy Staff employed by (optional)
- * @apiParam {Date} parttimedDate Staff parttimed date (optional)
- * @apiParam {ObjectId} parttimedBy Staff parttimed by (optional)
- * @apiParam {Date} fulltimedDate Staff fulltimed date (optional)
- * @apiParam {ObjectId} fulltimedBy Staff fulltimed by (optional)
- * @apiParam {Date} leaveDate Staff leave date (optional)
- * @apiParam {ObjectId} leaveBy Staff leave by (optional)
- * @apiParam {Date} probatedDate Staff probated date (optional)
- * @apiParam {ObjectId} probatedBy Staff probated by (optional)
- * @apiParam {Date} suspendedDate Staff suspended date (optional)
- * @apiParam {ObjectId} suspendedBy Staff suspended by (optional)
- * @apiParam {Date} retiredDate Staff retired date (optional)
- * @apiParam {ObjectId} retiredBy Staff retired by (optional)
- * @apiParam {ObjectId} disengagedBy Staff disengaged by (optional)
- * @apiParam {Date} disengagedDate Staff disengaged date (optional)
- * @apiParam {String} employmentRemark Staff employment Remark (optional)
- * @apiParam {String} approvalRemark Staff approval Remark (optional)
- * @apiParam {String} status Staff employment approval status (optional)
- * @apiParam {Date} rejectedDate Staff employment rejected date (optional)
- * @apiParam {ObjectId} rejectedBy Staff employment rejected By (optional)
- * @apiParam {Date} lastLogin Staff lastLogin (optional)
- * @apiParam {Date} currentLogin Staff currentLogin (optional)
- * @apiParam {String} lastIp Staff lastIp (optional)
- * @apiParam {String} currentIp Staff currentIp (optional)
- * @apiParam {ObjectId} createdBy Staff record created by
- * @apiParam {ObjectId} updatedBy Staff record modified by
- * @apiSuccess {Object} Staff Staff's data.
+ * @apiParam {Boolean} isAssignedVehicle User is assigned a vehicle
+ * @apiParam {String} notice User notice (optional)
+ * @apiParam {Array} ratings User ratings (optional)
+ * @apiParam {Array} notifications User notifications
+ * @apiParam {String} remark User remark (optional)
+ * @apiParam {String} photo User photo (optional)
+ * @apiParam {Boolean} isSalaryPayable User is salary payable (optional)
+ * @apiParam {Boolean} isDocumentComplete User is document complete (optional)
+ * @apiParam {Number} accessLevel User access level 0 - 9 Max. Zero implies No access (optional)
+ * @apiParam {ObjectId} approvedBy User approved by (optional)
+ * @apiParam {Date} approvedDate User approved date (optional)
+ * @apiParam {Date} employedDate User employed date (optional)
+ * @apiParam {ObjectId} employedBy User employed by (optional)
+ * @apiParam {Date} parttimedDate User parttimed date (optional)
+ * @apiParam {ObjectId} parttimedBy User parttimed by (optional)
+ * @apiParam {Date} fulltimedDate User fulltimed date (optional)
+ * @apiParam {ObjectId} fulltimedBy User fulltimed by (optional)
+ * @apiParam {Date} leaveDate User leave date (optional)
+ * @apiParam {ObjectId} leaveBy User leave by (optional)
+ * @apiParam {Date} probatedDate User probated date (optional)
+ * @apiParam {ObjectId} probatedBy User probated by (optional)
+ * @apiParam {Date} suspendedDate User suspended date (optional)
+ * @apiParam {ObjectId} suspendedBy User suspended by (optional)
+ * @apiParam {Date} retiredDate User retired date (optional)
+ * @apiParam {ObjectId} retiredBy User retired by (optional)
+ * @apiParam {ObjectId} disengagedBy User disengaged by (optional)
+ * @apiParam {Date} disengagedDate User disengaged date (optional)
+ * @apiParam {String} employmentRemark User employment Remark (optional)
+ * @apiParam {String} approvalRemark User approval Remark (optional)
+ * @apiParam {String} status User employment approval status (optional)
+ * @apiParam {Date} rejectedDate User employment rejected date (optional)
+ * @apiParam {ObjectId} rejectedBy User employment rejected By (optional)
+ * @apiParam {Date} lastLogin User lastLogin (optional)
+ * @apiParam {Date} currentLogin User currentLogin (optional)
+ * @apiParam {String} lastIp User lastIp (optional)
+ * @apiParam {String} currentIp User currentIp (optional)
+ * @apiParam {ObjectId} createdBy User record created by
+ * @apiParam {ObjectId} updatedBy User record modified by
+ * @apiSuccess {Object} User User's data.
  * @apiError {Object} 400 Some parameters may contain invalid values.
- * @apiError 404 Staff not found.
+ * @apiError 404 User not found.
  * @apiError 401 master access only.
  */
-router.post("/staff", [checkAuth, isValidStaff], createHandler);
+router.post("/user", [checkAuth, isValidUser], createHandler);
 
 /**
- * @api {put} /api/staff/{recordId} Update a Staff record
- * @apiName UpdateStaff
- * @apiGroup Staff
+ * @api {put} /api/user/{recordId} Update a User record
+ * @apiName UpdateUser
+ * @apiGroup User
  * @apiHeader {String} Authorization Bearer token
- * @apiParam {String} serial Staff serial (optional)
- * @apiParam {ObjectId} category Staff Category (optional)
- * @apiParam {String} title Staff title (optional)
- * @apiParam {String} surname Staff surname (required)
- * @apiParam {String} otherName Staff other name (required)
- * @apiParam {String} gender Staff gender (required)
- * @apiParam {Date} birthDate Staff birth date (required)
- * @apiParam {String} maritalStatus Staff marital status (required)
- * @apiParam {Number} children Staff Number of children (optional)
- * @apiParam {String} phone Staff office phone (required)
- * @apiParam {String} phoneHome Staff phone personal (optional)
- * @apiParam {String} emailPersonal Staff personal email Address (optional)
- * @apiParam {String} address Staff address (optional)
- * @apiParam {String} village Staff village (optional)
- * @apiParam {ObjectId} state Staff state (required)
- * @apiParam {ObjectId} county Staff county (required)
- * @apiParam {String} country Staff country (required)
- * @apiParam {String} email Staff email (optional)
- * @apiParam {String} password Staff password (optional)
- * @apiParam {String} otp Staff otp (optional)
- * @apiParam {Number} otpCount Staff otp count (optional)
- * @apiParam {Boolean} otpAccess Staff OTP Access Status
- * @apiParam {String} kin Staff kin (required)
- * @apiParam {String} kinPhone Staff kin phone (required)
- * @apiParam {String} kinAddress Staff kin address (required)
- * @apiParam {String} guarantor1 Staff guarantor1 (required)
- * @apiParam {String} guarantor1Phone Staff guarantor1 phone (required)
- * @apiParam {String} guarantor1Address Staff guarantor1 address (required)
- * @apiParam {String} guarantor2 Staff guarantor2 (optional)
- * @apiParam {String} guarantor2Phone Staff guarantor2 phone (optional)
- * @apiParam {String} guarantor2Address Staff guarantor2 address (optional)
- * @apiParam {String} profession Staff profession (optional)
- * @apiParam {String} qualification Staff qualification (optional)
- * @apiParam {String} institution Staff institution (optional)
- * @apiParam {String} employment Staff employment status (required)
- * @apiParam {String} tin Staff tin Tax Identification Number
- * @apiParam {Number} annualIncome Staff annualIncome is Gross Annual  Income
- * @apiParam {Number} basicSalary Staff basicSalary is basic net monthly salary
- * @apiParam {Number} bonus Staff bonus non-recurrent monthly bonus added to salary
- * @apiParam {Number} entertainmentAllowance Staff entertainment allowance (optional)
- * @apiParam {Number} houseAllowance Staff house allowance (optional)
- * @apiParam {Number} lunchAllowance Staff lunch allowance (optional)
- * @apiParam {Number} medicalAllowance Staff medical allowance (optional)
- * @apiParam {Number} transportAllowance Staff transport allowance (optional)
- * @apiParam {Number} utilityAllowance Staff utility allowance (optional)
- * @apiParam {Number} welfareAllowance Staff welfare allowance (optional)
- * @apiParam {Number} pension Staff pension To encourage pension contribution the
+ * @apiParam {String} serial User serial (optional)
+ * @apiParam {ObjectId} category User Category (optional)
+ * @apiParam {String} title User title (optional)
+ * @apiParam {String} surname User surname (required)
+ * @apiParam {String} otherName User other name (required)
+ * @apiParam {String} gender User gender (required)
+ * @apiParam {Date} birthDate User birth date (required)
+ * @apiParam {String} maritalStatus User marital status (required)
+ * @apiParam {Number} children User Number of children (optional)
+ * @apiParam {String} phone User office phone (required)
+ * @apiParam {String} phoneHome User phone personal (optional)
+ * @apiParam {String} emailPersonal User personal email Address (optional)
+ * @apiParam {String} address User address (optional)
+ * @apiParam {String} village User village (optional)
+ * @apiParam {ObjectId} state User state (required)
+ * @apiParam {ObjectId} county User county (required)
+ * @apiParam {String} country User country (required)
+ * @apiParam {String} email User email (optional)
+ * @apiParam {String} password User password (optional)
+ * @apiParam {String} otp User otp (optional)
+ * @apiParam {Number} otpCount User otp count (optional)
+ * @apiParam {Boolean} otpAccess User OTP Access Status
+ * @apiParam {String} kin User kin (required)
+ * @apiParam {String} kinPhone User kin phone (required)
+ * @apiParam {String} kinAddress User kin address (required)
+ * @apiParam {String} guarantor1 User guarantor1 (required)
+ * @apiParam {String} guarantor1Phone User guarantor1 phone (required)
+ * @apiParam {String} guarantor1Address User guarantor1 address (required)
+ * @apiParam {String} guarantor2 User guarantor2 (optional)
+ * @apiParam {String} guarantor2Phone User guarantor2 phone (optional)
+ * @apiParam {String} guarantor2Address User guarantor2 address (optional)
+ * @apiParam {String} profession User profession (optional)
+ * @apiParam {String} qualification User qualification (optional)
+ * @apiParam {String} institution User institution (optional)
+ * @apiParam {String} employment User employment status (required)
+ * @apiParam {String} tin User tin Tax Identification Number
+ * @apiParam {Number} annualIncome User annualIncome is Gross Annual  Income
+ * @apiParam {Number} basicSalary User basicSalary is basic net monthly salary
+ * @apiParam {Number} bonus User bonus non-recurrent monthly bonus added to salary
+ * @apiParam {Number} entertainmentAllowance User entertainment allowance (optional)
+ * @apiParam {Number} houseAllowance User house allowance (optional)
+ * @apiParam {Number} lunchAllowance User lunch allowance (optional)
+ * @apiParam {Number} medicalAllowance User medical allowance (optional)
+ * @apiParam {Number} transportAllowance User transport allowance (optional)
+ * @apiParam {Number} utilityAllowance User utility allowance (optional)
+ * @apiParam {Number} welfareAllowance User welfare allowance (optional)
+ * @apiParam {Number} pension User pension To encourage pension contribution the
  *  Government allows employees to contribute more than 8% of your basic, housing,
  *  and transport as a pension contribution.
  *  By doing so, you get more tax reliefs, thus lower taxable income.
- * @apiParam {Number} assurance Staff Life Assurance premiums are those premiums you pay
+ * @apiParam {Number} assurance User Life Assurance premiums are those premiums you pay
  *  towards insuring an immediate family member in the event that you die.
  *  There is no limit to how much you can contribute and how much relief you can get from it.
- * @apiParam {ObjectId} bank Staff bank (optional)
- * @apiParam {String} bankAccountNumber Staff bank account number (optional)
- * @apiParam {String} bankAccountName Staff bank account name (optional)
- * @apiParam {String} rank Staff rank (optional)
- * @apiParam {ObjectId} office Staff office
- * @apiParam {ObjectId} role Staff role is an array of permissions the office demands
- * @apiParam {ObjectId} superior Staff superior id (required)
- * @apiParam {String} subsidiary Staff subsidiary (required)
- * @apiParam {ObjectId} terminal Staff terminal (required)
- * @apiParam {ObjectId} currentVehicle Staff currentVehicle (optional)
+ * @apiParam {ObjectId} bank User bank (optional)
+ * @apiParam {String} bankAccountNumber User bank account number (optional)
+ * @apiParam {String} bankAccountName User bank account name (optional)
+ * @apiParam {String} rank User rank (optional)
+ * @apiParam {ObjectId} office User office
+ * @apiParam {ObjectId} role User role is an array of permissions the office demands
+ * @apiParam {ObjectId} superior User superior id (required)
+ * @apiParam {String} subsidiary User subsidiary (required)
+ * @apiParam {ObjectId} terminal User terminal (required)
+ * @apiParam {ObjectId} currentVehicle User currentVehicle (optional)
  * @apiParam {Array} assignments array of Objects of Asset Assigmnet History
  * managed my Asset Manager (prohibited)
- * @apiParam {Boolean} isAssignedVehicle Staff is assigned a vehicle
- * @apiParam {String} notice Staff notice (optional)
- * @apiParam {Array} ratings Staff ratings (optional)
- * @apiParam {Array} notifications Staff notifications
- * @apiParam {String} remark Staff remark (optional)
- * @apiParam {String} photo Staff photo (optional)
- * @apiParam {Boolean} isSalaryPayable Staff is salary payable (optional)
- * @apiParam {Boolean} isDocumentComplete Staff is document complete (optional)
- * @apiParam {Number} accessLevel Staff access level 0 - 9 Max. Zero implies No access (optional)
- * @apiParam {ObjectId} approvedBy Staff approved by (optional)
- * @apiParam {Date} approvedDate Staff approved date (optional)
- * @apiParam {Date} employedDate Staff employed date (optional)
- * @apiParam {ObjectId} employedBy Staff employed by (optional)
- * @apiParam {Date} parttimedDate Staff parttimed date (optional)
- * @apiParam {ObjectId} parttimedBy Staff parttimed by (optional)
- * @apiParam {Date} fulltimedDate Staff fulltimed date (optional)
- * @apiParam {ObjectId} fulltimedBy Staff fulltimed by (optional)
- * @apiParam {Date} leaveDate Staff leave date (optional)
- * @apiParam {ObjectId} leaveBy Staff leave by (optional)
- * @apiParam {Date} probatedDate Staff probated date (optional)
- * @apiParam {ObjectId} probatedBy Staff probated by (optional)
- * @apiParam {Date} suspendedDate Staff suspended date (optional)
- * @apiParam {ObjectId} suspendedBy Staff suspended by (optional)
- * @apiParam {Date} retiredDate Staff retired date (optional)
- * @apiParam {ObjectId} retiredBy Staff retired by (optional)
- * @apiParam {ObjectId} disengagedBy Staff disengaged by (optional)
- * @apiParam {Date} disengagedDate Staff disengaged date (optional)
- * @apiParam {String} employmentRemark Staff employment Remark (optional)
- * @apiParam {String} approvalRemark Staff approval Remark (optional)
- * @apiParam {String} status Staff employment approval status (optional)
- * @apiParam {Date} rejectedDate Staff employment rejected date (optional)
- * @apiParam {ObjectId} rejectedBy Staff employment rejected By (optional)
- * @apiParam {Date} lastLogin Staff lastLogin (optional)
- * @apiParam {Date} currentLogin Staff currentLogin (optional)
- * @apiParam {String} lastIp Staff lastIp (optional)
- * @apiParam {String} currentIp Staff currentIp (optional)
- * @apiParam {ObjectId} createdBy Staff record created by
- * @apiParam {ObjectId} updatedBy Staff record modified by
- * @apiSuccess {Object} Staff Staff's data.
+ * @apiParam {Boolean} isAssignedVehicle User is assigned a vehicle
+ * @apiParam {String} notice User notice (optional)
+ * @apiParam {Array} ratings User ratings (optional)
+ * @apiParam {Array} notifications User notifications
+ * @apiParam {String} remark User remark (optional)
+ * @apiParam {String} photo User photo (optional)
+ * @apiParam {Boolean} isSalaryPayable User is salary payable (optional)
+ * @apiParam {Boolean} isDocumentComplete User is document complete (optional)
+ * @apiParam {Number} accessLevel User access level 0 - 9 Max. Zero implies No access (optional)
+ * @apiParam {ObjectId} approvedBy User approved by (optional)
+ * @apiParam {Date} approvedDate User approved date (optional)
+ * @apiParam {Date} employedDate User employed date (optional)
+ * @apiParam {ObjectId} employedBy User employed by (optional)
+ * @apiParam {Date} parttimedDate User parttimed date (optional)
+ * @apiParam {ObjectId} parttimedBy User parttimed by (optional)
+ * @apiParam {Date} fulltimedDate User fulltimed date (optional)
+ * @apiParam {ObjectId} fulltimedBy User fulltimed by (optional)
+ * @apiParam {Date} leaveDate User leave date (optional)
+ * @apiParam {ObjectId} leaveBy User leave by (optional)
+ * @apiParam {Date} probatedDate User probated date (optional)
+ * @apiParam {ObjectId} probatedBy User probated by (optional)
+ * @apiParam {Date} suspendedDate User suspended date (optional)
+ * @apiParam {ObjectId} suspendedBy User suspended by (optional)
+ * @apiParam {Date} retiredDate User retired date (optional)
+ * @apiParam {ObjectId} retiredBy User retired by (optional)
+ * @apiParam {ObjectId} disengagedBy User disengaged by (optional)
+ * @apiParam {Date} disengagedDate User disengaged date (optional)
+ * @apiParam {String} employmentRemark User employment Remark (optional)
+ * @apiParam {String} approvalRemark User approval Remark (optional)
+ * @apiParam {String} status User employment approval status (optional)
+ * @apiParam {Date} rejectedDate User employment rejected date (optional)
+ * @apiParam {ObjectId} rejectedBy User employment rejected By (optional)
+ * @apiParam {Date} lastLogin User lastLogin (optional)
+ * @apiParam {Date} currentLogin User currentLogin (optional)
+ * @apiParam {String} lastIp User lastIp (optional)
+ * @apiParam {String} currentIp User currentIp (optional)
+ * @apiParam {ObjectId} createdBy User record created by
+ * @apiParam {ObjectId} updatedBy User record modified by
+ * @apiSuccess {Object} User User's data.
  * @apiError {Object} 400 Some parameters may contain invalid values.
- * @apiError 404 Staff not found.
+ * @apiError 404 User not found.
  * @apiError 401 master access only.
  */
-router.put("/staff/:recordId", [checkAuth, isValidStaff], updateHandler);
+router.put("/user/:recordId", [checkAuth, isValidUser], updateHandler);
 
 /**
- * @api {patch} /api/staff/{recordId} Patch staff
- * @apiName PatchStaff
- * @apiGroup Staff
+ * @api {patch} /api/user/{recordId} Patch User
+ * @apiName PatchUser
+ * @apiGroup User
  * @apiHeader {String} Authorization Bearer token
  * @apiParam {String} recordId required record ObjectId
  * @apiSuccess (Success 204) 204 No Content.
- * @apiError 404 Staff not found.
+ * @apiError 404 User not found.
  * @apiError 401 master access only.
  */
-router.patch("/staff/:recordId", [checkAuth, isValidStaff], patchHandler);
+router.patch("/user/:recordId", [checkAuth, isValidUser], patchHandler);
 
 /**
- * @api {delete} /api/staff/{recordId} Delete a Staff record
- * @apiName DeleteStaff
- * @apiGroup Staff
+ * @api {delete} /api/user/{recordId} Delete a User record
+ * @apiName DeleteUser
+ * @apiGroup User
  * @apiHeader {String} Authorization Bearer token
- * @apiParam {String} recordId required staff ObjectId
+ * @apiParam {String} recordId required User ObjectId
  * @apiSuccess (Success 204) 204 No Content.
- * @apiError 404 Staff not found.
+ * @apiError 404 User not found.
  * @apiError 401 master access only.
  */
-router.delete("/staff/:recordId", [checkAuth, isValidStaff], deleteHandler);
+router.delete("/user/:recordId", [checkAuth, isValidUser], deleteHandler);
 
 /**
- * @api {post} /api/staff/login Login Staff
- * @apiName LoginStaff
- * @apiGroup Staff
- * @apiParam {String} recordId Staff Id (required)
- * @apiParam {String} email Staff email address (optional)
- * @apiParam {String} password Staff password (optional)
- * @apiParam {String} officePhone Staff official phone number (optional)
- * @apiParam {String} otp Staff One-Time-Password sent to phone (optional)
+ * @api {post} /api/user/login Login User
+ * @apiName LoginUser
+ * @apiGroup User
+ * @apiParam {String} recordId User Id (required)
+ * @apiParam {String} email User email address (optional)
+ * @apiParam {String} password User password (optional)
+ * @apiParam {String} officePhone User official phone number (optional)
+ * @apiParam {String} otp User One-Time-Password sent to phone (optional)
  * @apiParam {String} type Login type "EMAIL", "PHONE", "OTP" (required)
  * @apiSuccess (Success 200) 200 Login Successful.
- * @apiError 404 Staff not found.
+ * @apiError 404 User not found.
  */
-router.post("/staff/login", loginHandler);
+router.post("/user/login", loginHandler);
 
 /**
- * @api {post} /api/staff/otp ForgotPassword Staff
- * @apiName ForgotStaff
- * @apiGroup Staff
- * @apiParam {String} email Staff email address (required)
- * @apiParam {String} phone Staff official phone # (required)
+ * @api {post} /api/user/otp ForgotPassword User
+ * @apiName ForgotUser
+ * @apiGroup User
+ * @apiParam {String} email User email address (required)
+ * @apiParam {String} phone User official phone # (required)
  * @apiSuccess (Success 200) 200 Login Successful.
- * @apiError 404 Staff not found.
+ * @apiError 404 User not found.
  */
-router.post("/staff/otp", sendOTPHandler);
+router.post("/user/otp", sendOTPHandler);
 
 /**
- * @api {post} /api/staff/photo/{recordId} updatePhoto Staff
+ * @api {post} /api/user/photo/{recordId} updatePhoto User
  * @apiName UpdatePhoto
- * @apiGroup Staff
+ * @apiGroup User
  * @apiHeader {String} Authorization Bearer token
- * @apiParam {String} recordId Staff Id (required)
- * @apiParam {String} phone Staff official phone # (required)
+ * @apiParam {String} recordId User Id (required)
+ * @apiParam {String} phone User official phone # (required)
  * @apiSuccess (Success 200) 200 Login Successful.
- * @apiError 404 Staff not found.
+ * @apiError 404 User not found.
  */
-router.post("/staff/photo/:recordId", updatePhotoHandler);
+router.post("/user/photo/:recordId", updatePhotoHandler);
 
 /**
- * @api {put} /api/staff/employment/{recordId}
- *  Update Staff employement status
- * @apiName UpdateStaffEmployment
- * @apiGroup Staff
- * @apiParam {String} recordId Staff record id (primaryKey)
- * @apiParam {Enum} employment Staff  EMPLOYED,FULLTIME,PARTTIME,LEAVE,
+ * @api {put} /api/user/employment/{recordId}
+ *  Update User employement status
+ * @apiName UpdateUserEmployment
+ * @apiGroup User
+ * @apiParam {String} recordId User record id (primaryKey)
+ * @apiParam {Enum} employment User  EMPLOYED,FULLTIME,PARTTIME,LEAVE,
  *  PROBATED,SUSPENDED,RETIRED, DISENGAGED,UNKNOWN,
- * @apiParam {String} employmentRemark Staff employment status remark
- * @apiSuccess {Object} Staff record's data.
+ * @apiParam {String} employmentRemark User employment status remark
+ * @apiSuccess {Object} User record's data.
  * @apiError {Object} 400 Some parameters may contain invalid values.
- * @apiError 404 Staff not found.
+ * @apiError 404 User not found.
  * @apiError 401 master access only.
  */
-router.put("/staff/employment/:recordId", [checkAuth, isValidStaff], updateEmploymentHandler);
+router.put("/user/employment/:recordId", [checkAuth, isValidUser], updateEmploymentHandler);
 
 /**
- * @api {put} /api/staff/approval/{recordId}
- *  Update Staff approval status
- * @apiName UpdateStaffApproval
- * @apiGroup Staff
- * @apiParam {String} recordId Staff record id (primaryKey)
- * @apiParam {Enum} status Staff PENDING, APPROVED, REJECTED
- * @apiParam {String} approvalRemark Staff approval status remark
- * @apiSuccess {Object} Staff record's data.
+ * @api {put} /api/user/approval/{recordId}
+ *  Update User approval status
+ * @apiName UpdateUserApproval
+ * @apiGroup User
+ * @apiParam {String} recordId User record id (primaryKey)
+ * @apiParam {Enum} status User PENDING, APPROVED, REJECTED
+ * @apiParam {String} approvalRemark User approval status remark
+ * @apiSuccess {Object} User record's data.
  * @apiError {Object} 400 Some parameters may contain invalid values.
- * @apiError 404 Staff not found.
+ * @apiError 404 User not found.
  * @apiError 401 master access only.
  */
-router.put("/staff/approval/:recordId", [checkAuth, isValidStaff], updateApprovalHandler);
+router.put("/user/approval/:recordId", [checkAuth, isValidUser], updateApprovalHandler);
 
 export default router;
