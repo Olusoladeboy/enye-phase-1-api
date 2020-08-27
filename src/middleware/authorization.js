@@ -5,7 +5,9 @@ import { fail, hasProp, safeGet, log4js, getRequestIp } from "../util";
 
 dotenv.config();
 
+
 const logger = log4js.getLogger(`[${module}]`);
+
 
 // Retrieve token from request header
 export function getToken(req) {

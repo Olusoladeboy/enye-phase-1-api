@@ -1,4 +1,6 @@
+import myLogger from "./logger";
+
 export * from "./helpers";
 export * from "./response";
-export * from "./logger";
 
+export { myLogger as log4js };

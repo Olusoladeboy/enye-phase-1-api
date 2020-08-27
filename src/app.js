@@ -13,6 +13,11 @@ import helmet from "helmet";
 import { user } from "./api";
 import database from "./config";
 
+import Access from "./api/access/model";
+
+console.log('I reached Here');
+
+
 dotenv.config();
 const app = express();
 
@@ -45,18 +50,92 @@ app.get('/api', (req, res) => {
     })
 })
 
+app.use((req, res, next) => {
+    const agent = req.headers["user-agent"];
+    const { method } = req;
+    const baseUrl = req.originalUrl;
+    const version = `HTTP/${req.httpVersion}`;
+    const status = res.statusCode;
+    // const software = req.headers["user-agent"].match(/\((.+?)\)/)[1];
+    const ipaddress = req.headers.origin;
+    // getRequestIp(req);
+    const allData = { ipaddress, agent, method, baseUrl, version, status };
+    // console.log(allData);
+    const newRecord = new Access(allData);
+    newRecord.save().then().catch(err => console.log(err.message));
+    next();
+});
+
+// Use Routes
+app.use("/api", user);
+
+app.get("/api/*", (req, res) => {
+    res.status(404);
+    res.json({
+        success: false,
+        payload: null,
+        message: `GOWORKR API SAYS: Endpoint not found for path: ${req.path}`,
+    });
+});
+
+app.use((error, req, res, next) => {
+    res.status(error.status || 500);
+    res.json({
+        success: false,
+        payload: null,
+        message: `GOWORKR API SAYS: ${error.message} for path: ${req.path}`,
+    });
+    next();
+});
+
 // listen for requests
 const server = app.listen(port, hostname, () => {
     console.log(`Server running at http://${hostname}:${port}/`);
 });
 
-setInterval(() => server.getConnections((err, connections) => console.log(`${connections} connections currently open`)), 10000);
+app.sayHello = _ => "Hello GoWorkR!";
+
+setInterval(() => server.getConnections((err, connections) => {
+    if (err) {
+        console.log(err);
+    }
+    console.log(`${connections} connections currently open`)
+}), 10000);
+
+process.on("SIGTERM", shutDown);
+process.on("SIGINT", shutDown);
+process.on("SIGQUIT", shutDown);
 
 let connections = [];
 
 server.on("connection", (connection) => {
     connections.push(connection);
+    // eslint-disable-next-line no-return-assign
     connection.on("close", () => connections = connections.filter(curr => curr !== connection));
 });
+
+function shutDown() {
+    console.log("Received kill signal, shutting down gracefully");
+    server.close((err) => {
+        if (err) {
+            console.error(err);
+            process.exit(1);
+        }
+        database.close(() => {
+            console.log("Mongoose connection disconnected");
+            process.exit(0);
+        });
+        console.log("Closed out remaining connections");
+        process.exit(0);
+    });
+
+    setTimeout(() => {
+        console.error("Could not close connections in time, forcefully shutting down");
+        process.exit(1);
+    }, 10000);
+
+    connections.forEach(curr => curr.end());
+    setTimeout(() => connections.forEach(curr => curr.destroy()), 5000);
+}
 
 export default app;

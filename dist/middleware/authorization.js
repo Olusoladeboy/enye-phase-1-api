@@ -17,8 +17,9 @@ var _util = require("../util");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-_dotenv["default"].config(); // const logger = log4js.getLogger(`[${module}]`);
-// Retrieve token from request header
+_dotenv["default"].config();
+
+var logger = _util.log4js.getLogger("[".concat(module, "]")); // Retrieve token from request header
 
 
 function getToken(req) {
@@ -82,7 +83,7 @@ function isValidUser(req, res, next) {
 
     return next(); // return isAuthorized(req, res,next);
   } catch (err) {
-    // logger.error(`[400] [${getRequestIp(req)}] [${req.method}] [${safeGet(req.user, "email")}] - [${req.path}], [Authentication], ${err.message}`);
+    logger.error("[400] [".concat((0, _util.getRequestIp)(req), "] [").concat(req.method, "] [").concat((0, _util.safeGet)(req.user, "email"), "] - [").concat(req.path, "], [Authentication], ").concat(err.message));
     return (0, _util.fail)(res, 403, "User not Validated! ".concat(err.message));
   }
 } // export function isAuthorized(req, res, next) {
