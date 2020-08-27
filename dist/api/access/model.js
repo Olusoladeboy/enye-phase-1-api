@@ -7,9 +7,7 @@ exports["default"] = exports.schema = void 0;
 
 var _mongoose = _interopRequireDefault(require("mongoose"));
 
-var _mongooseCsv = _interopRequireDefault(require("mongoose-csv"));
-
-var _constants = require("../../../constants");
+var _constants = require("../../constants");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 

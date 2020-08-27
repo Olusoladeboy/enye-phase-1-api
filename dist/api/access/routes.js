@@ -7,7 +7,7 @@ exports["default"] = void 0;
 
 var _express = _interopRequireDefault(require("express"));
 
-var _middleware = require("../../../middleware");
+var _middleware = require("../../middleware");
 
 var _controller = require("./controller");
 

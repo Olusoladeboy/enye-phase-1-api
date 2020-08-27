@@ -11,8 +11,7 @@
  */
 import mongoose from "mongoose";
 // eslint-disable-next-line camelcase
-import mongoose_csv from "mongoose-csv";
-import { DATABASE } from "../../../constants";
+import { DATABASE } from "../../constants";
 // eslint-disable-next-line import/no-cycle
 
 const { Schema } = mongoose;

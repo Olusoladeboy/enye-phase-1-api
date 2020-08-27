@@ -1,6 +1,6 @@
 import aqp from "api-query-params";
 import Access from "./model";
-import { success, fail, safeGet, getRequestIp, log4js } from "../../../util";
+import { success, fail, safeGet, getRequestIp, log4js } from "../../util";
 
 // Logging
 const module = "Access";

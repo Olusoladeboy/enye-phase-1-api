@@ -24,6 +24,7 @@
   "homepage": "https://github.com/Olusoladeboy/project-x#readme",
   "dependencies": {
     "api-query-params": "^4.15.0",
+    "babel-polyfill": "^6.26.0",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
     "compression": "^1.7.4",
