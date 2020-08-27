@@ -18,13 +18,13 @@ const { Schema } = mongoose;
 
 // const allData = { ipaddress, software, agent, method, baseUrl, version, status };
 export const schema = {
-    ipaddress: { type: String, trim: true, index: true },
-    software: { type: String, trim: true },
-    agent: { type: String, trim: true },
-    method: { type: String, trim: true },
-    baseUrl: { type: String, trim: true },
-    version: { type: String, trim: true },
-    status: { type: String, trim: true },
+        ipaddress: { type: String, trim: true, index: true },
+        software: { type: String, trim: true },
+        agent: { type: String, trim: true },
+        method: { type: String, trim: true },
+        baseUrl: { type: String, trim: true },
+        version: { type: String, trim: true },
+        status: { type: String, trim: true },
 };
 
 const options = DATABASE.OPTIONS;

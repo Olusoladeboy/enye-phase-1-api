@@ -1,5 +1,5 @@
 import express from "express";
-import { checkAuth, isValidStaff } from "../../middleware";
+import { checkAuth, isValidUser } from "../../middleware";
 import { fetchRecord, createRecord, deleteRecord } from "./controller";
 
 const router = express.Router();

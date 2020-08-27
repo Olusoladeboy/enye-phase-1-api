@@ -15,9 +15,6 @@ import database from "./config";
 
 import Access from "./api/access/model";
 
-console.log('I reached Here');
-
-
 dotenv.config();
 const app = express();
 
@@ -87,6 +84,9 @@ app.use((error, req, res, next) => {
     });
     next();
 });
+
+// import { User } from "./api/user/model"
+// console.log("User==>", User);
 
 // listen for requests
 const server = app.listen(port, hostname, () => {

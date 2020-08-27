@@ -30,7 +30,7 @@ var router = _express["default"].Router();
  * @apiSuccess {Object[]} Array of Objects of records.
  * @apiError {Object} 400 Some parameters may contain invalid values.
  */
-// router.get("/user", [checkAuth, isValidUser], fetchHandler);
+// router.get("/user",  fetchHandler);
 
 
 router.get("/user", _controller.fetchHandler);
@@ -147,8 +147,9 @@ router.get("/user", _controller.fetchHandler);
  * @apiError 404 User not found.
  * @apiError 401 master access only.
  */
+// router.post("/user",  createHandler);
 
-router.post("/user", [_authorization.checkAuth, _authorization.isValidUser], _controller.createHandler);
+router.post("/user", _controller.createHandler);
 /**
  * @api {put} /api/user/{recordId} Update a User record
  * @apiName UpdateUser
@@ -263,7 +264,7 @@ router.post("/user", [_authorization.checkAuth, _authorization.isValidUser], _co
  * @apiError 401 master access only.
  */
 
-router.put("/user/:recordId", [_authorization.checkAuth, _authorization.isValidUser], _controller.updateHandler);
+router.put("/user/:recordId", _controller.updateHandler);
 /**
  * @api {patch} /api/user/{recordId} Patch User
  * @apiName PatchUser
@@ -275,7 +276,7 @@ router.put("/user/:recordId", [_authorization.checkAuth, _authorization.isValidU
  * @apiError 401 master access only.
  */
 
-router.patch("/user/:recordId", [_authorization.checkAuth, _authorization.isValidUser], _controller.patchHandler);
+router.patch("/user/:recordId", _controller.patchHandler);
 /**
  * @api {delete} /api/user/{recordId} Delete a User record
  * @apiName DeleteUser
@@ -287,7 +288,7 @@ router.patch("/user/:recordId", [_authorization.checkAuth, _authorization.isVali
  * @apiError 401 master access only.
  */
 
-router["delete"]("/user/:recordId", [_authorization.checkAuth, _authorization.isValidUser], _controller.deleteHandler);
+router["delete"]("/user/:recordId", _controller.deleteHandler);
 /**
  * @api {post} /api/user/login Login User
  * @apiName LoginUser
@@ -341,7 +342,7 @@ router.post("/user/photo/:recordId", _controller.updatePhotoHandler);
  * @apiError 401 master access only.
  */
 
-router.put("/user/employment/:recordId", [_authorization.checkAuth, _authorization.isValidUser], _controller.updateEmploymentHandler);
+router.put("/user/employment/:recordId", _controller.updateEmploymentHandler);
 /**
  * @api {put} /api/user/approval/{recordId}
  *  Update User approval status
@@ -356,6 +357,6 @@ router.put("/user/employment/:recordId", [_authorization.checkAuth, _authorizati
  * @apiError 401 master access only.
  */
 
-router.put("/user/approval/:recordId", [_authorization.checkAuth, _authorization.isValidUser], _controller.updateApprovalHandler);
+router.put("/user/approval/:recordId", _controller.updateApprovalHandler);
 var _default = router;
 exports["default"] = _default;

@@ -31,7 +31,7 @@ var router = _express["default"].Router();
  */
 
 
-router.get("/accesses", [_middleware.checkAuth, _middleware.isValidStaff], _controller.fetchRecord);
+router.get("/accesses", [_middleware.checkAuth, isValidStaff], _controller.fetchRecord);
 /**
  * @api {post} /api/accesses Create accesses
  * @apiName CreateAccess
@@ -50,7 +50,7 @@ router.get("/accesses", [_middleware.checkAuth, _middleware.isValidStaff], _cont
  * @apiError 401 master access only.
  */
 
-router.post("/accesses", [_middleware.checkAuth, _middleware.isValidStaff], _controller.createRecord);
+router.post("/accesses", [_middleware.checkAuth, isValidStaff], _controller.createRecord);
 /**
  * @api {delete} /api/accesses/{recordId} Delete accesses
  * @apiName DeleteAccess
@@ -62,6 +62,6 @@ router.post("/accesses", [_middleware.checkAuth, _middleware.isValidStaff], _con
  * @apiError 401 master access only.
  */
 
-router["delete"]("/accesses/:recordId", [_middleware.checkAuth, _middleware.isValidStaff], _controller.deleteRecord);
+router["delete"]("/accesses/:recordId", [_middleware.checkAuth, isValidStaff], _controller.deleteRecord);
 var _default = router;
 exports["default"] = _default;

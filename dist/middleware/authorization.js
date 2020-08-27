@@ -5,7 +5,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.getToken = getToken;
 exports.checkAuth = checkAuth;
-exports.isValidUser = isValidUser;
 
 var _dotenv = _interopRequireDefault(require("dotenv"));
 
@@ -68,25 +67,23 @@ function checkAuth(req, res, next) {
   } catch (err) {
     return (0, _util.fail)(res, 403, "user not Authenticated! ".concat(err.message));
   }
-}
-
-function isValidUser(req, res, next) {
-  try {
-    var _req$user = req.user,
-        userType = _req$user.userType,
-        id = _req$user.id,
-        email = _req$user.email,
-        phone = _req$user.phone;
-    if (userType !== "User") return (0, _util.fail)(res, 403, "Invalid User credentials!");
-    console.log("\nValidating userType ".concat(userType, ", id ").concat(id, ", email ").concat(email, ", phone ").concat(phone)); // if (email === "admin@peacegroup.ng" || safeGet(role, "name") === "SUPER_ADMIN") return next();
-    // if (!role) return fail(res, 403, "Invalid User credentials! No user-role found");
-
-    return next(); // return isAuthorized(req, res,next);
-  } catch (err) {
-    logger.error("[400] [".concat((0, _util.getRequestIp)(req), "] [").concat(req.method, "] [").concat((0, _util.safeGet)(req.user, "email"), "] - [").concat(req.path, "], [Authentication], ").concat(err.message));
-    return (0, _util.fail)(res, 403, "User not Validated! ".concat(err.message));
-  }
-} // export function isAuthorized(req, res, next) {
+} // export function isValidUser(req, res, next) {
+//     try {
+//         console.log(req.user);
+//         const { userType, id, email, phone } = req.user;
+//         if (userType !== "User") return fail(res, 403, "Invalid User credentials!");
+//         console.log(`\nValidating userType ${userType}, id ${id}, email ${email}, phone ${phone}`);
+//         // if (email === "admin@peacegroup.ng" || safeGet(role, "name") === "SUPER_ADMIN") return next();
+//         // if (!role) return fail(res, 403, "Invalid User credentials! No user-role found");
+//         return next();
+//         // return isAuthorized(req, res,next);
+//     }
+//     catch (err) {
+//         logger.error(`[400] [${getRequestIp(req)}] [${req.method}] [${safeGet(req.user, "email")}] - [${req.path}], [Authentication], ${err.message}`);
+//         return fail(res, 403, `User not Validated! ${err.message}`);
+//     }
+// }
+// export function isAuthorized(req, res, next) {
 //     try {
 //         let reqAction;
 //         const { path, method } = req;

@@ -33,7 +33,7 @@ const router = express.Router();
  * @apiSuccess {Object[]} Array of Objects of records.
  * @apiError {Object} 400 Some parameters may contain invalid values.
  */
-// router.get("/user", [checkAuth, isValidUser], fetchHandler);
+// router.get("/user",  fetchHandler);
 router.get("/user", fetchHandler);
 
 /**
@@ -149,7 +149,8 @@ router.get("/user", fetchHandler);
  * @apiError 404 User not found.
  * @apiError 401 master access only.
  */
-router.post("/user", [checkAuth, isValidUser], createHandler);
+// router.post("/user",  createHandler);
+router.post("/user", createHandler);
 
 /**
  * @api {put} /api/user/{recordId} Update a User record
@@ -264,7 +265,7 @@ router.post("/user", [checkAuth, isValidUser], createHandler);
  * @apiError 404 User not found.
  * @apiError 401 master access only.
  */
-router.put("/user/:recordId", [checkAuth, isValidUser], updateHandler);
+router.put("/user/:recordId",  updateHandler);
 
 /**
  * @api {patch} /api/user/{recordId} Patch User
@@ -276,7 +277,7 @@ router.put("/user/:recordId", [checkAuth, isValidUser], updateHandler);
  * @apiError 404 User not found.
  * @apiError 401 master access only.
  */
-router.patch("/user/:recordId", [checkAuth, isValidUser], patchHandler);
+router.patch("/user/:recordId",  patchHandler);
 
 /**
  * @api {delete} /api/user/{recordId} Delete a User record
@@ -288,7 +289,7 @@ router.patch("/user/:recordId", [checkAuth, isValidUser], patchHandler);
  * @apiError 404 User not found.
  * @apiError 401 master access only.
  */
-router.delete("/user/:recordId", [checkAuth, isValidUser], deleteHandler);
+router.delete("/user/:recordId",  deleteHandler);
 
 /**
  * @api {post} /api/user/login Login User
@@ -342,7 +343,7 @@ router.post("/user/photo/:recordId", updatePhotoHandler);
  * @apiError 404 User not found.
  * @apiError 401 master access only.
  */
-router.put("/user/employment/:recordId", [checkAuth, isValidUser], updateEmploymentHandler);
+router.put("/user/employment/:recordId",  updateEmploymentHandler);
 
 /**
  * @api {put} /api/user/approval/{recordId}
@@ -357,6 +358,6 @@ router.put("/user/employment/:recordId", [checkAuth, isValidUser], updateEmploym
  * @apiError 404 User not found.
  * @apiError 401 master access only.
  */
-router.put("/user/approval/:recordId", [checkAuth, isValidUser], updateApprovalHandler);
+router.put("/user/approval/:recordId",  updateApprovalHandler);
 
 export default router;

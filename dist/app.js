@@ -32,8 +32,6 @@ var _model = _interopRequireDefault(require("./api/access/model"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 // import routes
-console.log('I reached Here');
-
 _dotenv["default"].config();
 
 var app = (0, _express["default"])();
@@ -114,7 +112,9 @@ app.use(function (error, req, res, next) {
     message: "GOWORKR API SAYS: ".concat(error.message, " for path: ").concat(req.path)
   });
   next();
-}); // listen for requests
+}); // import { User } from "./api/user/model"
+// console.log("User==>", User);
+// listen for requests
 
 var server = app.listen(port, hostname, function () {
   console.log("Server running at http://".concat(hostname, ":").concat(port, "/"));

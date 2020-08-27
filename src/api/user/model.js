@@ -100,8 +100,8 @@ export const schema = {
     },
     phone: { type: String, required: true, text: true },
     address: { type: String },
-    state: { type: ObjectId, ref: "State", required: true },
-    county: { type: ObjectId, ref: "County", required: true },
+    state: { type: ObjectId, ref: "State", required: false },
+    county: { type: ObjectId, ref: "County", required: false },
     country: { type: String, required: true, default: "ng" },
     email: {
         type: String,
