@@ -1,19 +1,17 @@
-import express from "express";
-import { checkAuth, isValidUser } from "../../middleware/authorization";
+/* eslint-disable no-unused-vars */
+import express from 'express';
+import { checkAuth, isValidUser } from '../../middleware/authorization';
 import {
-    fetchHandler,
-    createHandler,
-    updateHandler,
-    deleteHandler,
-    loginHandler,
-    patchHandler,
-    sendOTPHandler,
-    updatePhotoHandler,
-    updateApprovalHandler,
-    updateEmploymentHandler,
-    // eslint-disable-next-line import/named
+  fetchHandler,
+  createHandler,
+  updateHandler,
+  deleteHandler,
+  loginHandler,
+  patchHandler,
+  updateApprovalHandler,
+  // eslint-disable-next-line import/named
 }
-from "./controller";
+  from './controller';
 
 const router = express.Router();
 
@@ -34,7 +32,7 @@ const router = express.Router();
  * @apiError {Object} 400 Some parameters may contain invalid values.
  */
 // router.get("/user",  fetchHandler);
-router.get("/user", fetchHandler);
+router.get('/user', fetchHandler);
 
 /**
  * @api {post} /api/user Create a User record
@@ -150,7 +148,7 @@ router.get("/user", fetchHandler);
  * @apiError 401 master access only.
  */
 // router.post("/user",  createHandler);
-router.post("/user", createHandler);
+router.post('/user', createHandler);
 
 /**
  * @api {put} /api/user/{recordId} Update a User record
@@ -265,7 +263,7 @@ router.post("/user", createHandler);
  * @apiError 404 User not found.
  * @apiError 401 master access only.
  */
-router.put("/user/:recordId",  updateHandler);
+router.put('/user/:recordId', updateHandler);
 
 /**
  * @api {patch} /api/user/{recordId} Patch User
@@ -277,7 +275,7 @@ router.put("/user/:recordId",  updateHandler);
  * @apiError 404 User not found.
  * @apiError 401 master access only.
  */
-router.patch("/user/:recordId",  patchHandler);
+router.patch('/user/:recordId', patchHandler);
 
 /**
  * @api {delete} /api/user/{recordId} Delete a User record
@@ -289,7 +287,7 @@ router.patch("/user/:recordId",  patchHandler);
  * @apiError 404 User not found.
  * @apiError 401 master access only.
  */
-router.delete("/user/:recordId",  deleteHandler);
+router.delete('/user/:recordId', deleteHandler);
 
 /**
  * @api {post} /api/user/login Login User
@@ -304,7 +302,7 @@ router.delete("/user/:recordId",  deleteHandler);
  * @apiSuccess (Success 200) 200 Login Successful.
  * @apiError 404 User not found.
  */
-router.post("/user/login", loginHandler);
+router.post('/user/login', loginHandler);
 
 /**
  * @api {post} /api/user/otp ForgotPassword User
@@ -315,7 +313,7 @@ router.post("/user/login", loginHandler);
  * @apiSuccess (Success 200) 200 Login Successful.
  * @apiError 404 User not found.
  */
-router.post("/user/otp", sendOTPHandler);
+// router.post('/user/otp', sendOTPHandler);
 
 /**
  * @api {post} /api/user/photo/{recordId} updatePhoto User
@@ -327,7 +325,7 @@ router.post("/user/otp", sendOTPHandler);
  * @apiSuccess (Success 200) 200 Login Successful.
  * @apiError 404 User not found.
  */
-router.post("/user/photo/:recordId", updatePhotoHandler);
+// router.post('/user/photo/:recordId', updatePhotoHandler);
 
 /**
  * @api {put} /api/user/employment/{recordId}
@@ -343,7 +341,7 @@ router.post("/user/photo/:recordId", updatePhotoHandler);
  * @apiError 404 User not found.
  * @apiError 401 master access only.
  */
-router.put("/user/employment/:recordId",  updateEmploymentHandler);
+// router.put('/user/employment/:recordId', updateEmploymentHandler);
 
 /**
  * @api {put} /api/user/approval/{recordId}
@@ -358,6 +356,6 @@ router.put("/user/employment/:recordId",  updateEmploymentHandler);
  * @apiError 404 User not found.
  * @apiError 401 master access only.
  */
-router.put("/user/approval/:recordId",  updateApprovalHandler);
+router.put('/user/approval/:recordId', updateApprovalHandler);
 
 export default router;

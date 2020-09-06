@@ -1,5 +1,6 @@
+/* eslint-disable object-curly-newline */
 /* eslint-disable no-unused-vars */
-import { fetchService, createService, updateService, patchService, deleteService, loginService, sendOTPService, updateApprovalService } from './service';
+import { fetchService, createService, updateService, patchService, deleteService, loginService, updateApprovalService } from './service';
 import { success, fail, safeGet, log4js, getRequestIp } from '../../util';
 import { getToken } from '../../middleware';
 // import { photoUpload } from "../../services";
@@ -70,6 +71,22 @@ export async function deleteHandler(req, res) {
   }
 }
 
+// eslint-disable-next-line complexity
+function getLoginType(data) {
+  const {
+    email, phone, otp, password,
+  } = data;
+  let loginType = '';
+  if (email && password) {
+    loginType = 'EMAIL';
+  } else if (phone && password) {
+    loginType = 'PHONE';
+  } else if (phone && otp) {
+    loginType = 'OTP';
+  }
+  return loginType;
+}
+
 export async function loginHandler(req, res) {
   try {
     // if (!req.body.currentIp) req.body.currentIp = getRequestIp(req);
@@ -82,52 +99,40 @@ export async function loginHandler(req, res) {
   }
 }
 
-export async function sendOTPHandler(req, res) {
-  try {
-    const jwtToken = getToken(req);
-    await sendOTPService(req.body, jwtToken);
-    return success(res, 200, {}, 'OTP sent successfully!');
-  } catch (err) {
-    log(req, err);
-    return fail(res, 400, `Error sending ${module} record. ${err.message}`);
-  }
-}
+// export async function sendOTPHandler(req, res) {
+//   try {
+//     const jwtToken = getToken(req);
+//     await sendOTPService(req.body, jwtToken);
+//     return success(res, 200, {}, 'OTP sent successfully!');
+//   } catch (err) {
+//     log(req, err);
+//     return fail(res, 400, `Error sending ${module} record. ${err.message}`);
+//   }
+// }
 
-// eslint-disable-next-line complexity
-function getLoginType(data) {
-  const { email, phone, otp, password } = data;
-  let loginType = '';
-  if (email && password) {
-    loginType = 'EMAIL';
-  } else if (phone && password) {
-    loginType = 'PHONE';
-  } else if (phone && otp) {
-    loginType = 'OTP';
-  }
-  return loginType;
-}
-
-export async function updatePhotoHandler(req, res) {
-  try {
-    return photoUpload(req, res, async(err) => {
-      const data = {};
-      const { recordId } = req.params;
-      data.updatedBy = req.user.id;
-      const jwtToken = getToken(req);
-      if (err || req.file === undefined) return fail(res, 422, `Error processing file. ${err.message}`);
-      const fullPath = `upload/photo/${req.file.filename}`;
-      data.photo = fullPath;
-      const result = await updateService(recordId, data, jwtToken);
-      if (!result) {
-        return fail(res, 404, `${module} record not found.`);
-      }
-      return success(res, 200, result, `${result.length} ${module} record(s) retrieved successfully!`);
-    });
-  } catch (err) {
-    log(req, err);
-    return fail(res, 400, `Error creating ${module} record. ${err.message}`);
-  }
-}
+// export async function updatePhotoHandler(req, res) {
+//   try {
+//     return photoUpload(req, res, async(err) => {
+//       const data = {};
+//       const { recordId } = req.params;
+//       data.updatedBy = req.user.id;
+//       const jwtToken = getToken(req);
+//       if (err || req.file === undefined) return fail(res, 422,
+// `Error processing file. ${err.message}`);
+//       const fullPath = `upload/photo/${req.file.filename}`;
+//       data.photo = fullPath;
+//       const result = await updateService(recordId, data, jwtToken);
+//       if (!result) {
+//         return fail(res, 404, `${module} record not found.`);
+//       }
+//       return success(res, 200, result, `${result.length} ${module} record(s)
+//        retrieved successfully!`);
+//     });
+//   } catch (err) {
+//     log(req, err);
+//     return fail(res, 400, `Error creating ${module} record. ${err.message}`);
+//   }
+// }
 
 // eslint-disable-next-line complexity
 export async function updateApprovalHandler(req, res) {
@@ -143,16 +148,21 @@ export async function updateApprovalHandler(req, res) {
   }
 }
 
-// eslint-disable-next-line complexity
-export async function updateEmploymentHandler(req, res) {
-  try {
-    const data = req.body;
-    const { recordId } = req.params;
-    const jwtToken = getToken(req);
-    const result = await updateApprovalService(recordId, data, jwtToken);
-    return success(res, 200, result, `${module} employment record has been updated successfully!`);
-  } catch (err) {
-    log(req, err);
-    return fail(res, 400, `Error updating ${module} record. ${err.message}`);
-  }
-}
+// // eslint-disable-next-line complexity
+// export async function updateEmploymentHandler(req, res) {
+//   try {
+//     const data = req.body;
+//     const { recordId } = req.params;
+//     const jwtToken = getToken(req);
+//     const result = await updateApprovalService(recordId, data, jwtToken);
+//     return success(
+//       res,
+//       200,
+//       result,
+//       `${module} employment record has been updated successfully!`,
+//     );
+//   } catch (err) {
+//     log(req, err);
+//     return fail(res, 400, `Error updating ${module} record. ${err.message}`);
+//   }
+// }

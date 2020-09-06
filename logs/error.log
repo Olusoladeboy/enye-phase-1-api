@@ -1,0 +1,12 @@
+[2020-09-06T00:46:32.923] [ERROR] [User] - [400] [127.0.0.1] [POST] [] - [/user], [User], Error creating User record. Error validating User data. "birthDate" is required
+[2020-09-06T00:48:37.334] [ERROR] [User] - [400] [127.0.0.1] [POST] [] - [/user], [User], Error creating User record. Error validating User data. "maritalStatus" is required
+[2020-09-06T00:50:00.603] [ERROR] [User] - [400] [127.0.0.1] [POST] [] - [/user], [User], Error creating User record. Error validating User data. "state" is required
+[2020-09-06T01:25:49.503] [INFO] [State] - [200] [127.0.0.1] [GET] [] - [/states]
+[2020-09-06T01:28:41.683] [ERROR] [[object Object]] - [400] [127.0.0.1] [POST] [] - [/states], [Authentication], Cannot read property 'userType' of undefined
+[2020-09-06T01:35:44.915] [INFO] [State] - [200] [127.0.0.1] [GET] [] - [/states]
+[2020-09-06T01:42:46.331] [INFO] [County] - [200] [127.0.0.1] [GET] [] - [/counties]
+[2020-09-06T01:44:48.823] [ERROR] [User] - [400] [127.0.0.1] [POST] [] - [/user], [User], Error creating User record. Error validating User data. "createdBy" is required
+[2020-09-06T01:46:14.474] [ERROR] [User] - [400] [127.0.0.1] [POST] [] - [/user], [User], Error creating User record. User validation failed: createdBy: Path `createdBy` is required., gender: `Male` is not a valid enum value for path `gender`.
+[2020-09-06T01:46:44.932] [ERROR] [User] - [400] [127.0.0.1] [POST] [] - [/user], [User], Error creating User record. User validation failed: gender: `Male` is not a valid enum value for path `gender`.
+[2020-09-06T01:54:48.046] [ERROR] [User] - [400] [127.0.0.1] [POST] [] - [/user/login], [User], Authentication failed: Schema hasn't been registered for model "Notification".
+Use mongoose.model(name, schema)

@@ -1,3 +1,4 @@
-import user from "./user";
+import user from './user';
+import locationRoutes from './location';
 
-export { user };
+export { user, locationRoutes };

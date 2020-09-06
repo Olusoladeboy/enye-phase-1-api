@@ -19,7 +19,7 @@ const router = express.Router();
  * @apiSuccess {Object[]} Array of Objects of records.
  * @apiError {Object} 400 Some parameters may contain invalid values.
  */
-router.get("/accesses", [checkAuth, isValidStaff], fetchRecord);
+router.get("/accesses", [checkAuth, isValidUser], fetchRecord);
 
 /**
  * @api {post} /api/accesses Create accesses
@@ -38,7 +38,7 @@ router.get("/accesses", [checkAuth, isValidStaff], fetchRecord);
  * @apiError 404 Access not found.
  * @apiError 401 master access only.
  */
-router.post("/accesses", [checkAuth, isValidStaff], createRecord);
+router.post("/accesses", [checkAuth, isValidUser], createRecord);
 
 /**
  * @api {delete} /api/accesses/{recordId} Delete accesses
@@ -50,6 +50,6 @@ router.post("/accesses", [checkAuth, isValidStaff], createRecord);
  * @apiError 404 Access not found.
  * @apiError 401 master access only.
  */
-router.delete("/accesses/:recordId", [checkAuth, isValidStaff], deleteRecord);
+router.delete("/accesses/:recordId", [checkAuth, isValidUser], deleteRecord);
 
 export default router;
