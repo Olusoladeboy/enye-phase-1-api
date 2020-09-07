@@ -1,5 +1,7 @@
 # src
 # /src/
+
+.vscode
 .env
 
 /assets/
