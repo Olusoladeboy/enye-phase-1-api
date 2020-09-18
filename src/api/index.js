@@ -1,4 +1,5 @@
-import user from './user';
+import userRoutes from './user';
 import locationRoutes from './location';
+import multimediaRoutes from './multimedia';
 
-export { user, locationRoutes };
+export { userRoutes, locationRoutes, multimediaRoutes };

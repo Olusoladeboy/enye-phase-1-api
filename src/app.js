@@ -15,7 +15,7 @@ import path from 'path';
 import helmet from 'helmet';
 
 // import routes
-import { user, locationRoutes } from './api';
+import { userRoutes, locationRoutes, multimediaRoutes } from './api';
 import database from './config';
 
 import Access from './api/access/model';
@@ -69,8 +69,9 @@ app.use((req, res, next) => {
 });
 
 // Use Routes
-app.use('/api', user);
+app.use('/api', userRoutes);
 app.use('/api', locationRoutes);
+app.use('/api', multimediaRoutes);
 
 app.get('/api/*', (req, res) => {
   res.status(404);

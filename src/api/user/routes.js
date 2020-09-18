@@ -31,8 +31,8 @@ const router = express.Router();
  * @apiSuccess {Object[]} Array of Objects of records.
  * @apiError {Object} 400 Some parameters may contain invalid values.
  */
-// router.get("/user",  fetchHandler);
-router.get('/user', fetchHandler);
+// router.get('/user', fetchHandler);
+router.get('/user', [checkAuth, isValidUser], fetchHandler);
 
 /**
  * @api {post} /api/user Create a User record
@@ -263,7 +263,7 @@ router.post('/user', createHandler);
  * @apiError 404 User not found.
  * @apiError 401 master access only.
  */
-router.put('/user/:recordId', updateHandler);
+router.put('/user/:recordId', [checkAuth, isValidUser], updateHandler);
 
 /**
  * @api {patch} /api/user/{recordId} Patch User
@@ -275,7 +275,7 @@ router.put('/user/:recordId', updateHandler);
  * @apiError 404 User not found.
  * @apiError 401 master access only.
  */
-router.patch('/user/:recordId', patchHandler);
+router.patch('/user/:recordId', [checkAuth, isValidUser], patchHandler);
 
 /**
  * @api {delete} /api/user/{recordId} Delete a User record
@@ -287,7 +287,7 @@ router.patch('/user/:recordId', patchHandler);
  * @apiError 404 User not found.
  * @apiError 401 master access only.
  */
-router.delete('/user/:recordId', deleteHandler);
+router.delete('/user/:recordId', [checkAuth, isValidUser], deleteHandler);
 
 /**
  * @api {post} /api/user/login Login User
@@ -328,34 +328,17 @@ router.post('/user/login', loginHandler);
 // router.post('/user/photo/:recordId', updatePhotoHandler);
 
 /**
- * @api {put} /api/user/employment/{recordId}
- *  Update User employement status
- * @apiName UpdateUserEmployment
- * @apiGroup User
- * @apiParam {String} recordId User record id (primaryKey)
- * @apiParam {Enum} employment User  EMPLOYED,FULLTIME,PARTTIME,LEAVE,
- *  PROBATED,SUSPENDED,RETIRED, DISENGAGED,UNKNOWN,
- * @apiParam {String} employmentRemark User employment status remark
- * @apiSuccess {Object} User record's data.
- * @apiError {Object} 400 Some parameters may contain invalid values.
- * @apiError 404 User not found.
- * @apiError 401 master access only.
- */
-// router.put('/user/employment/:recordId', updateEmploymentHandler);
-
-/**
  * @api {put} /api/user/approval/{recordId}
  *  Update User approval status
  * @apiName UpdateUserApproval
  * @apiGroup User
  * @apiParam {String} recordId User record id (primaryKey)
  * @apiParam {Enum} status User PENDING, APPROVED, REJECTED
- * @apiParam {String} approvalRemark User approval status remark
  * @apiSuccess {Object} User record's data.
  * @apiError {Object} 400 Some parameters may contain invalid values.
  * @apiError 404 User not found.
  * @apiError 401 master access only.
  */
-router.put('/user/approval/:recordId', updateApprovalHandler);
+router.put('/user/approval/:recordId', [checkAuth, isValidUser], updateApprovalHandler);
 
 export default router;
