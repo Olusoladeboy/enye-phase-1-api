@@ -24,6 +24,7 @@
   "homepage": "https://github.com/Olusoladeboy/project-x#readme",
   "dependencies": {
     "api-query-params": "^4.15.0",
+    "app-root-path": "^3.0.0",
     "babel-polyfill": "^6.26.0",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
@@ -38,6 +39,7 @@
     "mongoose": "^5.10.0",
     "mongoose-csv": "^1.1.0",
     "morgan": "^1.10.0",
+    "multer": "^1.4.2",
     "util": "^0.12.3"
   },
   "devDependencies": {

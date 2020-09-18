@@ -28,9 +28,11 @@ export function checkAuth(req, res, next) {
     if (!token) return fail(res, 403, 'No token found in request header!');
     // eslint-disable-next-line complexity
     return verify(token, JWT.jwtSecret, (err, decoded) => {
+      console.log(decoded);
       if (err) return fail(res, 403, 'Failed to authenticate token.!');
       req.user = {
         id: decoded.id,
+        userType: decoded.userType,
         email: decoded.email,
         phone: decoded.phone,
         currentIp: getRequestIp(req),
@@ -53,13 +55,14 @@ export function checkAuth(req, res, next) {
       return next();
     });
   } catch (err) {
+    console.log('Error from check authorization');
     return fail(res, 403, `user not Authenticated! ${err.message}`);
   }
 }
 
 export function isValidUser(req, res, next) {
   try {
-    console.log(req.user);
+    console.log('User ==> ', req.user);
     const { userType, id, email, phone } = req.user;
     if (userType !== 'User') return fail(res, 403, 'Invalid User credentials!');
     console.log(`\nValidating userType ${userType}, id ${id}, email ${email}, phone ${phone}`);

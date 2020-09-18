@@ -11,7 +11,7 @@ import bcryptjs from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import aqp from 'api-query-params';
 import User, {
-  schemaCreate, schemaUpdate, schemaLogin, schemaApproval, schemaEmployment,
+  validateCreate, validateUpdate, validateLogin, validateApproval, schemaEmployment,
 } from './model';
 import { hasProp, hash, generateOtp } from '../../util';
 // import { sendSmsAsync, emailForgotPassword, sendEmailAsync, postData } from '../../services';
@@ -57,7 +57,7 @@ export async function createService(data = {}, jwtToken = '') {
     data.password = data.password || 'peace'; //! Random password
     const { password, email, phone } = data;
     if (hasProp(data, 'password')) data.password = hash(data.password);
-    const { error } = schemaCreate.validate(data);
+    const { error } = validateCreate.validate(data);
     if (error) throw new Error(`Error validating ${module} data. ${error.message}`);
     const duplicate = await User.findOne({ $or: [{ email }, { phone }] }).exec();
     if (duplicate) {
@@ -126,7 +126,7 @@ export async function updateService(recordId, data = {}, jwtToken = '') {
     if (hasProp(data, 'password')) {
       data.password = hash(data.password);
     }
-    const { error } = schemaUpdate.validate(data);
+    const { error } = validateUpdate.validate(data);
     data.status = 'PENDING';
     if (error) throw new Error(`Error validating ${module} data. ${error.message}`);
 
@@ -134,6 +134,7 @@ export async function updateService(recordId, data = {}, jwtToken = '') {
     if (!result) {
       throw new Error(`${module} record not found.`);
     }
+    return result;
   } catch (err) {
     throw new Error(`Error updating ${module} record. ${err.message}`);
   }
@@ -145,6 +146,7 @@ export async function patchService(recordId, data = {}, jwtToken = '') {
     if (!result) {
       throw new Error(`${module} record not found.`);
     }
+    return result;
   } catch (err) {
     throw new Error(`Error patching ${module} record. ${err.message}`);
   }
@@ -158,6 +160,7 @@ export async function deleteService(recordId, jwtToken = '') {
     if (!result) {
       throw new Error(`${module} record not found.`);
     }
+    return result;
   } catch (err) {
     throw new Error(`Error deleting ${module} record. ${err.message}`);
   }
@@ -165,7 +168,7 @@ export async function deleteService(recordId, jwtToken = '') {
 
 // export async function sendOTPService(data = {}, jwtToken = '') {
 //     try {
-//         const { error } = schemaLogin.validate(data);
+//         const { error } = validateLogin.validate(data);
 //         if (error) throw new Error('Invalid paramater: require both Email & Phone for OTP');
 //         const { phone, email } = data;
 //         const otp = generateOtp();
@@ -209,13 +212,14 @@ function getLoginType(data) {
 export async function updateApprovalService(recordId, data = {}, jwtToken = '') {
   try {
     const userId = data.updatedBy;
-    const { status, approvalRemark, accessLevel } = data;
-    const record = { status, approvalRemark, accessLevel };
+    const { status } = data;
+    const record = { status };
+    console.log(recordId);
     if (recordId === '5a51bc91860d8b5ba0001000') throw new Error('Cannot alter User record');
-    const { error } = schemaApproval.validate(data);
+    const { error } = validateApproval.validate(data);
     if (error) throw new Error(`Error validating ${module} data. ${error.message}`);
-    const User = await User.findById(recordId).exec();
-    if (User.deleted) throw new Error(`Error approving ${module} record. It was deleted since ${User.deletedAt}`);
+    const user = await User.findById(recordId).exec();
+    if (user.deleted) throw new Error(`Error approving ${module} record. It was deleted since ${user.deletedAt}`);
     switch (data.status) {
       case 'APPROVED':
         record.approvedBy = userId;
@@ -308,7 +312,7 @@ export async function createRecord(req, res) {
         return upload(req, res, async (err) => {
             const data = req.body;
             data.createdBy = req.user.id;
-            const { error } = schemaCreate.validate(data);
+            const { error } = validateCreate.validate(data);
             if (error) return fail(res, 422, `Error validating request data. ${error.message}`);
             if (err || req.file === undefined) {
                 return fail(res, 422, `Error processing file. ${err.message}`);
@@ -333,7 +337,7 @@ export async function createRecord(req, res) {
 // eslint-disable-next-line complexity
 export async function loginService(loginPayload) {
   try {
-    const { error } = schemaLogin.validate(loginPayload);
+    const { error } = validateLogin.validate(loginPayload);
     if (error) throw new Error(`Invalid ${module} login data. ${error.message}`);
     if (!getLoginType(loginPayload)) throw new Error('Invlaid login parameters');
     const {
