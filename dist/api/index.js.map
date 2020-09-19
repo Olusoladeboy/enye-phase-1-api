@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../src/api/index.js"],"names":[],"mappings":";;;;;;;;;;;;;;;;;;;;;;;;AAAA;;AACA;;AACA","sourcesContent":["import userRoutes from './user';\nimport locationRoutes from './location';\nimport multimediaRoutes from './multimedia';\n\nexport { userRoutes, locationRoutes, multimediaRoutes };\n"],"file":"index.js"}
