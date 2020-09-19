@@ -72,15 +72,24 @@ export const validateUpdate = Joi.object({
   ratings: Joi.array().optional(),
   photo: Joi.string().optional(),
   userType: Joi.string().optional(),
+  verificationVideo: Joi.string().trim().length(24).optional(),
+  verificationDate: Joi.date().optional(),
   updatedBy: Joi.string().trim().length(24).required(),
 });
 
 export const validateApproval = Joi.object({
   status: Joi.string().trim().valid(...STATUS).required(),
+  verified: Joi.boolean().required(),
   approvedBy: Joi.string().optional(),
   approvedDate: Joi.date().optional(),
   rejectedBy: Joi.string().optional(),
   rejectedDate: Joi.date().optional(),
+  updatedBy: Joi.string().trim().length(24).required(),
+});
+
+export const validateVerify = Joi.object({
+  verificationVideo: Joi.string().trim().length(24).optional(),
+  verificationDate: Joi.date().optional(),
   updatedBy: Joi.string().trim().length(24).required(),
 });
 
@@ -127,7 +136,10 @@ export const schema = {
   notifications: [{ type: ObjectId, ref: 'Notification' }],
   photo: { type: String },
   userType: { type: String },
+  verificationVideo: { type: ObjectId, ref: 'Media' },
+  verificationDate: { type: Date },
   //* Approval
+  verified: { type: Boolean, default: false },
   status: { type: String, enum: STATUS, default: 'PENDING' },
   approvedDate: { type: Date },
   approvedBy: { type: ObjectId, ref: 'User' },

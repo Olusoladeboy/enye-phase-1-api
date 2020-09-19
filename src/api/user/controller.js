@@ -1,6 +1,14 @@
 /* eslint-disable object-curly-newline */
 /* eslint-disable no-unused-vars */
-import { fetchService, createService, updateService, patchService, deleteService, loginService, updateApprovalService } from './service';
+import {
+  fetchService,
+  createService,
+  updateService,
+  patchService,
+  deleteService,
+  loginService,
+  updateApprovalService,
+  updateVerificationStatusService } from './service';
 import { success, fail, safeGet, log4js, getRequestIp } from '../../util';
 import { getToken } from '../../middleware';
 // import { photoUpload } from "../../services";
@@ -148,21 +156,21 @@ export async function updateApprovalHandler(req, res) {
   }
 }
 
-// // eslint-disable-next-line complexity
-// export async function updateEmploymentHandler(req, res) {
-//   try {
-//     const data = req.body;
-//     const { recordId } = req.params;
-//     const jwtToken = getToken(req);
-//     const result = await updateApprovalService(recordId, data, jwtToken);
-//     return success(
-//       res,
-//       200,
-//       result,
-//       `${module} employment record has been updated successfully!`,
-//     );
-//   } catch (err) {
-//     log(req, err);
-//     return fail(res, 400, `Error updating ${module} record. ${err.message}`);
-//   }
-// }
+// eslint-disable-next-line complexity
+export async function updateVerificationStatusHandler(req, res) {
+  try {
+    const data = req.body;
+    const { recordId } = req.params;
+    const jwtToken = getToken(req);
+    const result = await updateVerificationStatusService(recordId, data, jwtToken);
+    return success(
+      res,
+      200,
+      result,
+      `${module} employment record has been updated successfully!`,
+    );
+  } catch (err) {
+    log(req, err);
+    return fail(res, 400, `Error updating ${module} record. ${err.message}`);
+  }
+}

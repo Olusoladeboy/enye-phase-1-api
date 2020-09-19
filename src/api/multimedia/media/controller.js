@@ -3,6 +3,7 @@
 import multer from 'multer';
 import appRoot from 'app-root-path';
 import dotenv from 'dotenv';
+
 import {
   fetchService, createService, updateService, patchService, deleteService,
 } from './service';
@@ -25,9 +26,11 @@ let videoUrl;
 const imageStoredLocally = multer.diskStorage({
   destination(req, file, callback) {
     callback(null, `${appRoot}/src/upload/Images`);
+    console.log(`${appRoot}/src/upload/Images`);
   },
   filename(req, file, callback) {
-    imageUrl = `${file.fieldname}_${new Date().toISOString()}_${file.originalname}`;
+    // eslint-disable-next-line no-useless-escape
+    imageUrl = `${file.fieldname}_${new Date().toISOString().replace(/[\/\\:]/g, '_')}_${file.originalname}`;
     callback(null, imageUrl);
   },
 });
@@ -37,7 +40,8 @@ const videoStoredLocally = multer.diskStorage({
     callback(null, `${appRoot}/src/upload/Videos`);
   },
   filename(req, file, callback) {
-    videoUrl = `${file.fieldname}_${new Date().toISOString()}_${file.originalname}`;
+    // eslint-disable-next-line no-useless-escape
+    videoUrl = `${file.fieldname}_${new Date().toISOString().replace(/[\/\\:]/g, '_')}_${file.originalname}`;
     callback(null, videoUrl);
   },
 });
@@ -51,13 +55,14 @@ export async function createImageHandler(req, res) {
       if (err) return fail(res, 422, `Error uploading media. ${err.message}`);
       const {
         name,
-        description,
-        category,
         type,
       } = req.body;
+      const {
+        id: createdBy,
+      } = req.user;
       const url = req.files[0].path;
       const data = {
-        type, name, url, description, category, createdBy: '5a51bc91860d8b5ba0001000',
+        type, name, url, createdBy,
       };
       console.log(data);
       const result = await createService(data);

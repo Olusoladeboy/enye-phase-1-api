@@ -30,7 +30,7 @@ export const validateCreate = Joi.object({
   width: Joi.number().positive().optional(),
   duration: Joi.number().positive().optional(),
   url: Joi.string().trim().required(),
-  // image: Joi.any().meta({ swaggerType: "file" }).required(),
+  // image: Joi.any().meta({ swaggerType: 'file' }).required(),
   extension: Joi.string().trim().optional(),
   createdBy: Joi.string().trim().length(24).required(),
 });
