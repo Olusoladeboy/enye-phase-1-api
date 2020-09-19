@@ -11,7 +11,7 @@ import bcryptjs from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import aqp from 'api-query-params';
 import User, {
-  validateCreate, validateUpdate, validateLogin, validateApproval, schemaEmployment,
+  validateCreate, validateUpdate, validateLogin, validateApproval, validateVerify,
 } from './model';
 import { hasProp, hash, generateOtp } from '../../util';
 // import { sendSmsAsync, emailForgotPassword, sendEmailAsync, postData } from '../../services';
@@ -242,97 +242,27 @@ export async function updateApprovalService(recordId, data = {}, jwtToken = '') 
 
 // eslint-disable-next-line consistent-return
 // eslint-disable-next-line complexity
-// export async function updateEmploymentService(recordId, data = {}, jwtToken = '') {
-//     try {
-//         const userId = data.updatedBy;
-//         const { employment, employmentRemark } = data;
-//         const record = { employment, employmentRemark };
-//         if (recordId === '5a51bc91860d8b5ba0001000') throw new Error('Cannot alter User record');
-//         const { error } = schemaEmployment.validate(data);
-//         if (error) throw new Error(`Error validating ${module} data. ${error.message}`);
-//         const User = await User.findById(recordId).exec();
-// eslint-disable-next-line max-len
-//         if (User.deleted) throw new Error(`Error approving ${module} record. It was deleted since ${User.deletedAt}`);
-//         switch (data.employment) {
-//         case 'EMPLOYED':
-//             record.employedBy = userId;
-//             record.employedDate = Date.now();
-//             record.accessLevel = 1;
-//             break;
-//         case 'FULLTIME':
-//             record.fulltimedBy = userId;
-//             record.fulltimedDate = Date.now();
-//             break;
-//         case 'PARTTIME':
-//             record.parttimedBy = userId;
-//             record.parttimedDate = Date.now();
-//             break;
-//         case 'LEAVE':
-//             record.leaveBy = userId;
-//             record.leaveDate = Date.now();
-//             record.accessLevel = 1;
-//             break;
-//         case 'PROBATED':
-//             record.probatedBy = userId;
-//             record.probatedDate = Date.now();
-//             record.accessLevel = 1;
-//             break;
-//         case 'SUSPENDED':
-//             record.suspendedBy = userId;
-//             record.suspendedDate = Date.now();
-//             record.isSalaryPayable = false;
-//             record.accessLevel = 0;
-//             break;
-//         case 'RETIRED':
-//             record.retiredBy = userId;
-//             record.retiredDate = Date.now();
-//             record.isSalaryPayable = false;
-//             record.accessLevel = 0;
-//             break;
-//         case 'DISENGAGED':
-//             record.disengagedBy = userId;
-//             record.disengagedDate = Date.now();
-//             record.isSalaryPayable = false;
-//             record.accessLevel = 0;
-//             break;
-//         default:
-//         }
-//         const result = await updateService(recordId, data);
-//         if (!result) {
-//             throw new Error(`${module} record not found.`);
-//         }
-//     } catch (err) {
-//         throw new Error(`Error updating ${module} record. ${err.message}`);
-//     }
-// }
-
-/*
-export async function createRecord(req, res) {
-    try {
-        return upload(req, res, async (err) => {
-            const data = req.body;
-            data.createdBy = req.user.id;
-            const { error } = validateCreate.validate(data);
-            if (error) return fail(res, 422, `Error validating request data. ${error.message}`);
-            if (err || req.file === undefined) {
-                return fail(res, 422, `Error processing file. ${err.message}`);
-            }
-            const fullPath = `upload/photo/${req.file.filename}`;
-            data.photo = fullPath;
-            const newRecord = new Item(data);
-            const result = await newRecord.save();
-            if (!result) {
-                return fail(res, 'Error: Bad Request: Model not found');
-            }
-            return success(res, 201, result, 'Record created successfully!');
-        });
-    } catch (err) {
-        logger.error(`[400] [${getRequestIp(req)}] [${req.method}]
-        [${safeGet(req.user, 'email')}] - [${req.path}], [${module}], ${err.message}`);
-        return fail(res, 400, `Error creating record. ${err.message}`);
+export async function updateVerificationStatusService(recordId, data = {}, jwtToken = '') {
+  try {
+    // const userId = data.updatedBy;
+    console.log('record =>', recordId);
+    const { verificationDate, verificationVideo } = data;
+    const record = { verificationDate, verificationVideo };
+    if (recordId === '5a51bc91860d8b5ba0001000') throw new Error('Cannot alter User record');
+    const { error } = validateVerify.validate(data);
+    if (error) throw new Error(`Error validating ${module} data. ${error.message}`);
+    const user = await User.findById(recordId).exec();
+    console.log(user);
+    if (user.deleted) throw new Error(`Error verifying ${module} record. It was deleted since ${user.deletedAt}`);
+    record.verificationDate = Date.now();
+    const result = await updateService(recordId, data);
+    if (!result) {
+      throw new Error(`${module} record not found.`);
     }
+  } catch (err) {
+    throw new Error(`Error updating ${module} record. ${err.message}`);
+  }
 }
- */
 
 // eslint-disable-next-line complexity
 export async function loginService(loginPayload) {
@@ -357,7 +287,6 @@ export async function loginService(loginPayload) {
     if (!user) {
       throw new Error('User not found.');
     }
-    // if (!(user.accessLevel > 1)) throw new Error('Insufficient Access Level');
     if (type === 'OTP') {
       if (!user.otpAccess) {
         throw new Error(`Authentication failed. OTP Access is ${user.otpAccess}`);

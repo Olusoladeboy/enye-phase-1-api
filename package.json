@@ -8,8 +8,8 @@
     "serve": "NODE_ENV=production node ./dist  --source-maps",
     "apprunner": "pm2 start ./dist -i 4 --name erp --env production --update-env",
     "test": "NODE_ENV=test ./node_modules/.bin/mocha --require @babel/register --recursive  --timeout 10000",
-    "kill": "sudo kill $(sudo lsof -t -i:5010)",
-    "doc": "rm -rf dist/public && apidoc -i src/ -o dist/public",
+    "kill": "sudo kill $(sudo lsof -t -i:5000)",
+    "doc": "rm -rf ./doc && apidoc -i src/ -o ./doc",
     "dist": "babel src -s -D -d dist && npm run doc"
   },
   "repository": {

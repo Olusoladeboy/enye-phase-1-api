@@ -7,14 +7,14 @@ const table = [
   { name: 'airwheel-segway', url: 'airwheel-segway.jpg' },
 ];
 
-const staffBaseId = DATABASE.BASE_ID.STAFF;
+const UserBaseId = DATABASE.BASE_ID.User;
 const baseId = DATABASE.BASE_ID.IMAGE;
 
 const result = table.map((record, index) => {
   const obj = Object.assign({}, record);
   const id = index + 1;
   obj._id = toObjectId(baseId, id);
-  obj.createdBy = toObjectId(staffBaseId, 1);
+  obj.createdBy = toObjectId(UserBaseId, 1);
   return obj;
 });
 

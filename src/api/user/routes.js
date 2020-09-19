@@ -9,6 +9,7 @@ import {
   loginHandler,
   patchHandler,
   updateApprovalHandler,
+  updateVerificationStatusHandler,
   // eslint-disable-next-line import/named
 }
   from './controller';
@@ -340,5 +341,21 @@ router.post('/user/login', loginHandler);
  * @apiError 401 master access only.
  */
 router.put('/user/approval/:recordId', [checkAuth, isValidUser], updateApprovalHandler);
+
+/**
+ * @api {put} /api/user/approval/{recordId}
+ *  Update User approval status
+ * @apiName UpdateUserApproval
+ * @apiGroup User
+ * @apiParam {String} recordId User record id (primaryKey)
+ * @apiParam {ObjectId} verificationVideo Verification Video Media ObjectID
+ *  [Video should have been uplaoded via 'api/media/video' route]
+ * @apiParam {Date} verificationDate Verification Date
+ * @apiSuccess {Object} User record's data.
+ * @apiError {Object} 400 Some parameters may contain invalid values.
+ * @apiError 404 User not found.
+ * @apiError 401 master access only.
+ */
+router.put('/user/verify/:recordId', [checkAuth, isValidUser], updateVerificationStatusHandler);
 
 export default router;
