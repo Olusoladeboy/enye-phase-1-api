@@ -12,7 +12,7 @@
 
 # To Do
 
-- [ ] Add Video Verification Process
+- [x] Add Video Verification
 
 - [ ] Add task and reviews to a user's landing profile
 
