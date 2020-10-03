@@ -53,7 +53,7 @@ var validateCreate = _joi["default"].object({
   bank: _joi["default"].string().optional(),
   bankAccountNumber: _joi["default"].string().optional(),
   bankAccountName: _joi["default"].string().optional(),
-  ratings: _joi["default"].array().optional(),
+  reviews: _joi["default"].array().optional(),
   photo: _joi["default"].string().optional(),
   userType: _joi["default"].string().required(),
   createdBy: _joi["default"].string().trim().length(24).required()
@@ -85,7 +85,7 @@ var validateUpdate = _joi["default"].object({
   bank: _joi["default"].string().optional(),
   bankAccountNumber: _joi["default"].string().optional(),
   bankAccountName: _joi["default"].string().optional(),
-  ratings: _joi["default"].array().optional(),
+  reviews: _joi["default"].array().optional(),
   photo: _joi["default"].string().optional(),
   userType: _joi["default"].string().optional(),
   verificationVideo: _joi["default"].string().trim().length(24).optional(),
@@ -212,9 +212,9 @@ var schema = {
   bankAccountName: {
     type: String
   },
-  ratings: [{
+  reviews: [{
     type: ObjectId,
-    ref: 'Rating'
+    ref: 'Reviews'
   }],
   notifications: [{
     type: ObjectId,

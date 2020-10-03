@@ -15,10 +15,6 @@ var _constants = require("../../../constants");
 
 var _table = _interopRequireDefault(require("./table"));
 
-var _model = _interopRequireDefault(require("../state/model"));
-
-var _model2 = _interopRequireDefault(require("../../user/model"));
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 /* eslint-disable no-unused-vars */

@@ -104,9 +104,12 @@ app.use(function (req, res, next) {
   next();
 }); // Use Routes
 
+app.use('/api', _api.taskRoutes);
 app.use('/api', _api.userRoutes);
+app.use('/api', _api.categoryRoutes);
 app.use('/api', _api.locationRoutes);
 app.use('/api', _api.multimediaRoutes);
+app.use('/api', _api.reviewRoutes);
 app.get('/api/*', function (req, res) {
   res.status(404);
   res.json({

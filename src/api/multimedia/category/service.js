@@ -1,15 +1,15 @@
 /* eslint-disable object-shorthand */
 import aqp from 'api-query-params';
-import Category, { validateCreate, validateUpdate } from './model';
+import MediaCategory, { validateCreate, validateUpdate } from './model';
 
-const module = 'Category';
+const module = 'MediaCategory';
 
 export async function fetchService(query) {
   try {
     const {
       filter, skip, limit, sort, projection, population,
     } = aqp(query);
-    const result = await Category.find(filter)
+    const result = await MediaCategory.find(filter)
       .populate(population)
       .skip(skip)
       .limit(limit)
@@ -19,7 +19,7 @@ export async function fetchService(query) {
     if (!result) {
       throw new Error(`${module} record not found.`);
     }
-    const total = await Category.find(filter).estimatedDocumentCount().exec();
+    const total = await MediaCategory.find(filter).estimatedDocumentCount().exec();
     const metadata = {
       total, skip, limit, page: 0,
     };
@@ -33,7 +33,7 @@ export async function createService(data) {
   try {
     const { error } = validateCreate.validate(data);
     if (error) throw new Error(`Error validating ${module} data. ${error.message}`);
-    const newRecord = new Category(data);
+    const newRecord = new MediaCategory(data);
     const result = await newRecord.save();
     if (!result) {
       throw new Error(`${module} record not found.`);
@@ -48,7 +48,7 @@ export async function updateService(recordId, data) {
   try {
     const { error } = validateUpdate.validate(data);
     if (error) throw new Error(`Error validating ${module} data. ${error.message}`);
-    const result = await Category.findOneAndUpdate({ _id: recordId }, data, { new: true });
+    const result = await MediaCategory.findOneAndUpdate({ _id: recordId }, data, { new: true });
     if (!result) {
       throw new Error(`${module} record with Id ${recordId} not found.`);
     }
@@ -60,7 +60,7 @@ export async function updateService(recordId, data) {
 
 export async function patchService(recordId, data) {
   try {
-    const result = await Category.findOneAndUpdate({ _id: recordId }, data, { new: true });
+    const result = await MediaCategory.findOneAndUpdate({ _id: recordId }, data, { new: true });
     if (!result) {
       throw new Error(`${module} record not found.`);
     }
@@ -72,7 +72,7 @@ export async function patchService(recordId, data) {
 
 export async function deleteService(recordId) {
   try {
-    const result = await Category.findOneAndRemove({ _id: recordId });
+    const result = await MediaCategory.findOneAndRemove({ _id: recordId });
     if (!result) {
       throw new Error(`${module} record not found.`);
     }

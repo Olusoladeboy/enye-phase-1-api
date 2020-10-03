@@ -18,8 +18,6 @@ import mongoose from 'mongoose';
 import mongoose_csv from 'mongoose-csv';
 import { DATABASE } from '../../../constants';
 import table from './table';
-import State from '../state/model';
-import User from '../../user/model';
 
 const { Schema } = mongoose;
 const { ObjectId } = Schema.Types;

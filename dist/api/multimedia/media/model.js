@@ -74,7 +74,7 @@ var schema = {
   },
   category: {
     type: ObjectId,
-    ref: 'Category',
+    ref: 'MediaCategory',
     index: true
   },
   length: {

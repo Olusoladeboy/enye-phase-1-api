@@ -4,7 +4,7 @@
  * @property {String} type Media type "DOC|PDF|IMAGE|AUDIO|VIDEO|DATA"
  * @property {String} name Media name or title
  * @property {String} url The Media url absolute-path
- * @property {ObjectId} category Media Category
+ * @property {ObjectId} category Media MediaCategory
  * @property {String} description Media description
  * @property {Number} length Media length dimension in mm
  * @property {Number} width Media width dimension in mm
@@ -57,7 +57,7 @@ export const schema = {
     type: String, trim: true, required: true, unique: true,
   },
   description: { type: String },
-  category: { type: ObjectId, ref: 'Category', index: true },
+  category: { type: ObjectId, ref: 'MediaCategory', index: true },
   length: { type: Number, comment: 'mm', index: true },
   width: { type: Number, comment: 'mm', index: true },
   duration: { type: Number, comment: 'minute', index: true },
