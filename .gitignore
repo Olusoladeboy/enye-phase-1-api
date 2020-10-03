@@ -1,6 +1,7 @@
 # src
 # /src/
 
+.idea
 .vscode
 .env
 
