@@ -1,7 +1,7 @@
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable object-curly-newline */
-import aqp from 'api-query-params';
-import Task, { validateCreate, validateUpdate } from './model';
 import { success, fail, safeGet, log4js, getRequestIp, generateCode } from '../../util';
+import { createService, deleteService, fetchService, updateService } from './service';
 
 // Logging
 const module = 'Task';
@@ -11,19 +11,9 @@ function log(req, err) {
 }
 
 export async function fetchRecord(req, res) {
-  const { query } = req;
-  const { filter, skip, limit, sort, projection, population } = aqp(query);
   try {
-    const result = await Task.find(filter)
-      .populate(population)
-      .skip(skip)
-      .limit(limit)
-      .sort(sort)
-      .select(projection)
-      .exec();
-    if (!result) {
-      return fail(res, 404, `${module} record not found.`);
-    }
+    const { query } = req;
+    const result = await fetchService(query);
     logger.info(`[200] [${getRequestIp(req)}] [${req.method}] [${safeGet(req.user, 'email')}] - [${req.path}]`);
     return success(res, 200, result, `${result.length} ${module} record(s) retrieved successfully!`);
   } catch (err) {
@@ -35,15 +25,8 @@ export async function fetchRecord(req, res) {
 export async function createRecord(req, res) {
   try {
     const data = req.body;
-    const { terminal } = req.user;
-    data.code = generateCode(terminal.id, 10);
-    const { error } = validateCreate.validate(data);
-    if (error) return fail(res, 422, `Error validating ${module} data. ${error.message}`);
-    const newRecord = new Task(data);
-    const result = await newRecord.save();
-    if (!result) {
-      return fail(res, 404, `${module} record not found.`);
-    }
+    data.code = generateCode(req.user.id, 10);
+    const result = await createService(data);
     return success(res, 201, result, `${module} record(s) created successfully!`);
   } catch (err) {
     log(req, err);
@@ -54,13 +37,8 @@ export async function createRecord(req, res) {
 export async function updateRecord(req, res) {
   const data = req.body;
   const { recordId } = req.params;
-  const { error } = validateUpdate.validate(data);
-  if (error) return fail(res, 422, `Error validating ${module} data. ${error.message}`);
   try {
-    const result = await Task.findOneAndUpdate({ _id: recordId }, data, { new: true });
-    if (!result) {
-      return fail(res, 404, `${module} record not found.`);
-    }
+    const result = await updateService(recordId, data);
     return success(res, 200, result, `${module} record(s) updated successfully!`);
   } catch (err) {
     log(req, err);
@@ -69,13 +47,10 @@ export async function updateRecord(req, res) {
 }
 
 export async function patchRecord(req, res) {
-  const data = req.body;
-  const { recordId } = req.params;
   try {
-    const result = await Task.findOneAndUpdate({ _id: recordId }, data, { new: true });
-    if (!result) {
-      return fail(res, 404, `${module} record not found.`);
-    }
+    const data = req.body;
+    const { recordId } = req.params;
+    const result = await updateService(recordId, data);
     return success(res, 200, result, `${module} record(s) patched successfully!`);
   } catch (err) {
     log(req, err);
@@ -84,12 +59,9 @@ export async function patchRecord(req, res) {
 }
 
 export async function deleteRecord(req, res) {
-  const { recordId } = req.params;
   try {
-    const result = await Task.findOneAndRemove({ _id: recordId });
-    if (!result) {
-      return fail(res, 404, `${module} record not found.`);
-    }
+    const { recordId } = req.params;
+    const result = await deleteService(recordId);
     return success(res, 200, result, `${module} record(s) deleted successfully!`);
   } catch (err) {
     log(req, err);

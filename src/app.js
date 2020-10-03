@@ -15,7 +15,13 @@ import path from 'path';
 import helmet from 'helmet';
 
 // import routes
-import { userRoutes, locationRoutes, multimediaRoutes, reviewRoutes } from './api';
+import {
+  taskRoutes,
+  userRoutes,
+  categoryRoutes,
+  locationRoutes,
+  multimediaRoutes,
+  reviewRoutes } from './api';
 import database from './config';
 
 import Access from './api/access/model';
@@ -69,7 +75,9 @@ app.use((req, res, next) => {
 });
 
 // Use Routes
+app.use('/api', taskRoutes);
 app.use('/api', userRoutes);
+app.use('/api', categoryRoutes);
 app.use('/api', locationRoutes);
 app.use('/api', multimediaRoutes);
 app.use('/api', reviewRoutes);

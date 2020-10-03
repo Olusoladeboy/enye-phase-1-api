@@ -7,11 +7,11 @@ import {
 const router = express.Router();
 
 /**
- * @api {get} /api/categories?id={recordId} Retrieve one or all records
+ * @api {get} /api/media-categories?id={recordId} Retrieve one or all records
  * @apiName RetrieveCategory
  * @apiGroup Category
  * @apiExample {curl} Example usage for retieving a single record:
- *      curl -i api/categories?
+ *      curl -i api/media-categories?
  * @apiParam {Object} filter query condition (optional)
  * @apiParam {Number} skip Number of records to offset by (optional)
  * @apiParam {Number} limit Maximum Number of records to retrieve (optional)
@@ -21,10 +21,10 @@ const router = express.Router();
  * @apiSuccess {Object[]} Array of Objects of records.
  * @apiError {Object} 400 Some parameters may contain invalid values.
  */
-router.get('/categories', [checkAuth, isValidUser], fetchHandler);
+router.get('/media-categories', [checkAuth, isValidUser], fetchHandler);
 
 /**
- * @api {post} /api/categories Create categories
+ * @api {post} /api/media-categories Create media-categories
  * @apiName CreateCategory
  * @apiGroup Category
  * @apiHeader {String} Authorization Bearer token
@@ -38,10 +38,10 @@ router.get('/categories', [checkAuth, isValidUser], fetchHandler);
  * @apiError 404 Category not found.
  * @apiError 401 master access only.
  */
-router.post('/categories', [checkAuth, isValidUser], createHandler);
+router.post('/media-categories', [checkAuth, isValidUser], createHandler);
 
 /**
- * @api {put} /api/categories/{recordId} Update categories
+ * @api {put} /api/media-categories/{recordId} Update media-categories
  * @apiName UpdateCategory
  * @apiGroup Category
  * @apiHeader {String} Authorization Bearer token
@@ -56,10 +56,10 @@ router.post('/categories', [checkAuth, isValidUser], createHandler);
  * @apiError 401 master access only.
  */
 
-router.put('/categories/:recordId', [checkAuth, isValidUser], updateHandler);
+router.put('/media-categories/:recordId', [checkAuth, isValidUser], updateHandler);
 
 /**
- * @api {patch} /api/categories/{recordId} Patch categories
+ * @api {patch} /api/media-categories/{recordId} Patch media-categories
  * @apiName PatchCategory
  * @apiGroup Category
  * @apiHeader {String} Authorization Bearer token
@@ -68,10 +68,10 @@ router.put('/categories/:recordId', [checkAuth, isValidUser], updateHandler);
  * @apiError 404 Category not found.
  * @apiError 401 master access only.
  */
-router.patch('/categories/:recordId', [checkAuth, isValidUser], patchHandler);
+router.patch('/media-categories/:recordId', [checkAuth, isValidUser], patchHandler);
 
 /**
- * @api {delete} /api/categories/{recordId} Delete categories
+ * @api {delete} /api/media-categories/{recordId} Delete media-categories
  * @apiName DeleteCategory
  * @apiGroup Category
  * @apiHeader {String} Authorization Bearer token
@@ -80,6 +80,6 @@ router.patch('/categories/:recordId', [checkAuth, isValidUser], patchHandler);
  * @apiError 404 Category not found.
  * @apiError 401 master access only.
  */
-router.delete('/categories/:recordId', [checkAuth, isValidUser], deleteHandler);
+router.delete('/media-categories/:recordId', [checkAuth, isValidUser], deleteHandler);
 
 export default router;

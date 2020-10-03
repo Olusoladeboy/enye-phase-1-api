@@ -1,12 +1,12 @@
 /**
  * @author Nditah
- * @property {ObjectId} id Category primaryKey
- * @property {String} code Category code of category used by the system
- * @property {String} name Category name of category as displayed
- * @property {String} image Category image or icon of category as displayed
- * @property {String} description Category description of category as displayed
- * @property {String} parent Category parent category (from which category is a subcategory)
- * @description Category records user define classification of system records
+ * @property {ObjectId} id MediaCategory primaryKey
+ * @property {String} code MediaCategory code of category used by the system
+ * @property {String} name MediaCategory name of category as displayed
+ * @property {String} image MediaCategory image or icon of category as displayed
+ * @property {String} description MediaCategory description of category as displayed
+ * @property {String} parent MediaCategory parent category (from which category is a subcategory)
+ * @description MediaCategory records user define classification of system records
  */
 import Joi from 'joi';
 import mongoose from 'mongoose';
@@ -40,7 +40,7 @@ export const schema = {
   },
   name: { type: String, required: true },
   description: { type: String, required: true, index: true },
-  parent: { type: ObjectId, ref: 'Category' },
+  parent: { type: ObjectId, ref: 'MediaCategory' },
   image: { type: ObjectId, ref: 'Image' },
   createdBy: { type: ObjectId, required: true },
   updatedBy: { type: ObjectId },
@@ -55,8 +55,8 @@ const options = DATABASE.OPTIONS;
 const newSchema = new Schema(schema, options);
 newSchema.set('collection', 'category');
 
-const Category = mongoose.model('Category', newSchema);
+const MediaCategory = mongoose.model('MediaCategory', newSchema);
 
-if (preload) { Category.insertMany(table); }
+if (preload) { MediaCategory.insertMany(table); }
 
-export default Category;
+export default MediaCategory;

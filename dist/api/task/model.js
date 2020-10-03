@@ -13,53 +13,53 @@ var _constants = require("../../constants");
 
 var _table = _interopRequireDefault(require("./table"));
 
-var _Joi$string, _Joi$string2;
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+/* eslint-disable object-curly-newline */
 
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+/* eslint-disable import/no-cycle */
 
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
-
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
+/**
+ * @author Emmanuel Olusola
+ * @property {ObjectId} id Task primaryKey
+ * @property {String} name Task short name
+ * @property {String} tags Task tags are keywords
+ * @property {String} code Task code
+ * @property {ObjectId} category Task category
+ * @property {String} status Task status "PENDING|ASSIGNED|ONGOING|STARTED|ENDING|CLOSED"
+ * @property {String} title Task title
+ * @property {String} description Task description explanation and expectations
+ * @property {Number} manhour Task manhour estimated manhour required
+ * @property {Number} completion Task completion current Percent executed
+ * @property {Array} feedbacks Task feedbacks by User assignedTo
+ * @property {Date} startDate Task startDate assignedTo mark as started
+ * @property {Date} endDate Task endDate User assignedTo mark as ended
+ * @property {Date} assignedDate Task assignedDate
+ * @property {ObjectId} assignedTo Task assignedTo User performing the task
+ * @property {ObjectId} assignedBy Task assignedBy User created the task
+ * @property {Number} score Task score by User assignedBy
+ * @property {String} remark Task remark by User assignedBy
+ * @property {ObjectId} voucher Task voucher for needed funds by User assignedTo
+ * @property {Array} assignments Task array of Assignment resources User assignedTo
+ * @property {Boolean} recurring Task recurring status
+ * @property {String} recurring Task frequency
+ * @property {String} subsidiary Task subsidiary conducting the task
+ * @property {ObjectId} office Task office id conducting the task
+ * @description Task model holds record of all projects and assignments
+ */
+// eslint-disable-next-line camelcase
 var Schema = _mongoose["default"].Schema;
 var ObjectId = Schema.Types.ObjectId;
-var FREQUENCY = ['DAILY, WEEKLY, MONTHLY, QUARTERLY, ANNUALLY'];
+var STATUS = ['UNASSIGNED', 'PENDING', 'ACCEPTED', 'STARTED', 'COMPLETED'];
 
 var validateCreate = _joi["default"].object({
+  code: _joi["default"].string().trim().required(),
   name: _joi["default"].string().required(),
-  tags: _joi["default"].string().optional(),
-  code: _joi["default"].string().required(),
-  status: _joi["default"].string().optional(),
-  title: _joi["default"].string().required(),
+  category: _joi["default"].string().trim().length(24).required(),
   description: _joi["default"].string().required(),
   // Explanation and expectations
   manhour: _joi["default"].number().optional(),
-  completion: _joi["default"].number().optional(),
-  // Percent
-  feedbacks: _joi["default"].array().optional(),
-  // By User assignedTo
-  startDate: _joi["default"].date().optional(),
-  endDate: _joi["default"].date().optional(),
-  assignedDate: _joi["default"].date().optional(),
-  assignedTo: _joi["default"].string().optional(),
-  assignedBy: _joi["default"].string().optional(),
-  score: _joi["default"].number().optional(),
-  // By User assignedBy
-  remark: _joi["default"].string().optional(),
-  // By User assignedBy
-  voucher: _joi["default"].string().optional(),
-  recurring: _joi["default"]["boolean"]().optional(),
-  frequency: (_Joi$string = _joi["default"].string()).valid.apply(_Joi$string, _toConsumableArray(Object.values(FREQUENCY))).optional(),
-  assignments: _joi["default"].array().optional(),
-  office: _joi["default"].string().optional(),
+  location: _joi["default"].object().required(),
   createdBy: _joi["default"].string().trim().length(24).required()
 });
 
@@ -67,31 +67,23 @@ exports.validateCreate = validateCreate;
 
 var validateUpdate = _joi["default"].object({
   name: _joi["default"].string().optional(),
-  tags: _joi["default"].string().optional(),
-  code: _joi["default"].string().optional(),
-  status: _joi["default"].string().optional(),
-  title: _joi["default"].string().optional(),
+  category: _joi["default"].string().trim().length(24).optional(),
   description: _joi["default"].string().optional(),
   // Explanation and expectations
   manhour: _joi["default"].number().optional(),
+  location: _joi["default"].object().optional(),
+  tags: _joi["default"].string().optional(),
+  status: _joi["default"].string().optional(),
   completion: _joi["default"].number().optional(),
   // Percent
-  feedbacks: _joi["default"].array().optional(),
+  feedbacks: _joi["default"].string().optional(),
   // By User assignedTo
   startDate: _joi["default"].date().optional(),
   endDate: _joi["default"].date().optional(),
-  assignedDate: _joi["default"].date().optional(),
-  assignedTo: _joi["default"].string().optional(),
-  assignedBy: _joi["default"].string().optional(),
-  score: _joi["default"].number().optional(),
-  // By User assignedBy
+  acceptedDate: _joi["default"].date().optional(),
+  acceptedBy: _joi["default"].string().optional(),
   remark: _joi["default"].string().optional(),
   // By User assignedBy
-  voucher: _joi["default"].string().optional(),
-  recurring: _joi["default"]["boolean"]().optional(),
-  frequency: (_Joi$string2 = _joi["default"].string()).valid.apply(_Joi$string2, _toConsumableArray(Object.values(FREQUENCY))).optional(),
-  assignments: _joi["default"].array().optional(),
-  office: _joi["default"].string().optional(),
   updatedBy: _joi["default"].string().trim().length(24).required()
 });
 
@@ -115,10 +107,9 @@ var schema = {
     ref: 'Category'
   },
   status: {
-    type: String
-  },
-  title: {
-    type: String
+    type: String,
+    "enum": Object.values(STATUS),
+    "default": 'UNASSIGNED'
   },
   description: {
     type: String
@@ -128,57 +119,54 @@ var schema = {
     type: Number
   },
   completion: {
-    type: Number
+    type: Number,
+    "default": 0
   },
   // Percent
-  feedbacks: [{
+  feedback: {
     type: String
-  }],
-  // By User assignedTo
+  },
+  // By User Attended To
   startDate: {
     type: Date
   },
   endDate: {
     type: Date
   },
-  assignedDate: {
+  acceptedDate: {
     type: Date
   },
-  assignedTo: {
+  acceptedBy: {
     type: ObjectId,
     ref: 'User'
   },
-  assignedBy: {
-    type: ObjectId,
-    ref: 'User'
-  },
-  score: {
-    type: Number
-  },
-  // By User assignedBy
+  // User who accepted the task
   remark: {
     type: String
   },
   // By User assignedBy
-  voucher: {
-    type: ObjectId,
-    ref: 'Voucher'
-  },
-  recurring: {
-    type: Boolean,
-    "default": false
-  },
-  frequency: {
-    type: String,
-    "enum": Object.values(FREQUENCY)
-  },
-  assignments: [{
-    type: ObjectId,
-    ref: 'Assignment'
-  }],
-  office: {
-    type: ObjectId,
-    ref: 'Office'
+  location: {
+    latitude: {
+      type: String
+    },
+    longitude: {
+      type: String
+    },
+    address: {
+      type: String
+    },
+    county: {
+      type: ObjectId,
+      ref: 'County'
+    },
+    city: {
+      type: ObjectId,
+      ref: 'City'
+    },
+    state: {
+      type: ObjectId,
+      ref: 'State'
+    }
   },
   createdBy: {
     type: ObjectId,

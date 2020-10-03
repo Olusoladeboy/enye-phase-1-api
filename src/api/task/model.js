@@ -36,55 +36,33 @@ import table from './table';
 
 const { Schema } = mongoose;
 const { ObjectId } = Schema.Types;
-const FREQUENCY = ['DAILY, WEEKLY, MONTHLY, QUARTERLY, ANNUALLY'];
+const STATUS = ['UNASSIGNED', 'PENDING', 'ACCEPTED', 'STARTED', 'COMPLETED'];
 
 export const validateCreate = Joi.object({
+  code: Joi.string().trim().required(),
   name: Joi.string().required(),
-  tags: Joi.string().optional(),
-  code: Joi.string().required(),
-  status: Joi.string().optional(),
-  title: Joi.string().required(),
+  category: Joi.string().trim().length(24).required(),
   description: Joi.string().required(), // Explanation and expectations
   manhour: Joi.number().optional(),
-  completion: Joi.number().optional(), // Percent
-  feedbacks: Joi.array().optional(), // By User assignedTo
-  startDate: Joi.date().optional(),
-  endDate: Joi.date().optional(),
-  assignedDate: Joi.date().optional(),
-  assignedTo: Joi.string().optional(),
-  assignedBy: Joi.string().optional(),
-  score: Joi.number().optional(), // By User assignedBy
-  remark: Joi.string().optional(), // By User assignedBy
-  voucher: Joi.string().optional(),
-  recurring: Joi.boolean().optional(),
-  frequency: Joi.string().valid(...Object.values(FREQUENCY)).optional(),
-  assignments: Joi.array().optional(),
-  office: Joi.string().optional(),
+  location: Joi.object().required(),
   createdBy: Joi.string().trim().length(24).required(),
 });
 
 export const validateUpdate = Joi.object({
   name: Joi.string().optional(),
-  tags: Joi.string().optional(),
-  code: Joi.string().optional(),
-  status: Joi.string().optional(),
-  title: Joi.string().optional(),
+  category: Joi.string().trim().length(24).optional(),
   description: Joi.string().optional(), // Explanation and expectations
   manhour: Joi.number().optional(),
+  location: Joi.object().optional(),
+  tags: Joi.string().optional(),
+  status: Joi.string().optional(),
   completion: Joi.number().optional(), // Percent
-  feedbacks: Joi.array().optional(), // By User assignedTo
+  feedbacks: Joi.string().optional(), // By User assignedTo
   startDate: Joi.date().optional(),
   endDate: Joi.date().optional(),
-  assignedDate: Joi.date().optional(),
-  assignedTo: Joi.string().optional(),
-  assignedBy: Joi.string().optional(),
-  score: Joi.number().optional(), // By User assignedBy
+  acceptedDate: Joi.date().optional(),
+  acceptedBy: Joi.string().optional(),
   remark: Joi.string().optional(), // By User assignedBy
-  voucher: Joi.string().optional(),
-  recurring: Joi.boolean().optional(),
-  frequency: Joi.string().valid(...Object.values(FREQUENCY)).optional(),
-  assignments: Joi.array().optional(),
-  office: Joi.string().optional(),
   updatedBy: Joi.string().trim().length(24).required(),
 });
 
@@ -93,24 +71,24 @@ export const schema = {
   name: { type: String },
   tags: { type: String }, // Keywords
   category: { type: ObjectId, ref: 'Category' },
-  status: { type: String },
-  title: { type: String },
+  status: { type: String, enum: Object.values(STATUS), default: 'UNASSIGNED' },
   description: { type: String }, // Explanation and expectations
   manhour: { type: Number },
-  completion: { type: Number }, // Percent
-  feedbacks: [{ type: String }], // By User assignedTo
+  completion: { type: Number, default: 0 }, // Percent
+  feedback: { type: String }, // By User Attended To
   startDate: { type: Date },
   endDate: { type: Date },
-  assignedDate: { type: Date },
-  assignedTo: { type: ObjectId, ref: 'User' },
-  assignedBy: { type: ObjectId, ref: 'User' },
-  score: { type: Number }, // By User assignedBy
+  acceptedDate: { type: Date },
+  acceptedBy: { type: ObjectId, ref: 'User' }, // User who accepted the task
   remark: { type: String }, // By User assignedBy
-  voucher: { type: ObjectId, ref: 'Voucher' },
-  recurring: { type: Boolean, default: false },
-  frequency: { type: String, enum: Object.values(FREQUENCY) },
-  assignments: [{ type: ObjectId, ref: 'Assignment' }],
-  office: { type: ObjectId, ref: 'Office' },
+  location: {
+    latitude: { type: String },
+    longitude: { type: String },
+    address: { type: String },
+    county: { type: ObjectId, ref: 'County' },
+    city: { type: ObjectId, ref: 'City' },
+    state: { type: ObjectId, ref: 'State' },
+  },
   createdBy: { type: ObjectId, ref: 'User', required: true },
   updatedBy: { type: ObjectId, ref: 'User' },
   deleted: { type: Boolean, default: false },
