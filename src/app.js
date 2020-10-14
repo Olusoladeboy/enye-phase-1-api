@@ -29,7 +29,7 @@ import Access from './api/access/model';
 dotenv.config();
 const app = express();
 
-const hostname = 'localhost'; // "127.0.0.1";
+const hostname = '0.0.0.0'; // "127.0.0.1";
 const port = process.env.PORT || 5000;
 const defaultPath = path.join(__dirname, '/public');
 
