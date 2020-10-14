@@ -30,7 +30,7 @@ dotenv.config();
 const app = express();
 
 const hostname = '0.0.0.0'; // "127.0.0.1";
-const port = process.env.PORT || 5000;
+const port = process.env.PORT;
 const defaultPath = path.join(__dirname, '/public');
 
 app.use(helmet());
