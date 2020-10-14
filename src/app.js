@@ -29,7 +29,7 @@ import Access from './api/access/model';
 dotenv.config();
 const app = express();
 
-const hostname = '0.0.0.0'; // "127.0.0.1";
+const hostname = process.env.HOSTNAME || '0.0.0.0'; // "127.0.0.1";
 const port = process.env.PORT;
 const defaultPath = path.join(__dirname, '/public');
 
@@ -108,6 +108,8 @@ app.use((error, req, res, next) => {
 const server = app.listen(process.env.PORT, hostname, () => {
   console.log(`Server running at http://${hostname}:${process.env.PORT}/`);
 });
+
+console.log(process.env);
 
 app.sayHello = _ => 'Hello GoWorkR!';
 

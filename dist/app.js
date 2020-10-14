@@ -44,9 +44,9 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 _dotenv["default"].config();
 
 var app = (0, _express["default"])();
-var hostname = 'localhost'; // "127.0.0.1";
+var hostname = process.env.HOSTNAME || '0.0.0.0'; // "127.0.0.1";
 
-var port = process.env.PORT || 5000;
+var port = process.env.PORT;
 
 var defaultPath = _path["default"].join(__dirname, '/public');
 
@@ -130,9 +130,10 @@ app.use(function (error, req, res, next) {
 // console.log("User==>", User);
 // listen for requests
 
-var server = app.listen(port, hostname, function () {
-  console.log("Server running at http://".concat(hostname, ":").concat(port, "/"));
+var server = app.listen(process.env.PORT, hostname, function () {
+  console.log("Server running at http://".concat(hostname, ":").concat(process.env.PORT, "/"));
 });
+console.log(process.env);
 
 app.sayHello = function (_) {
   return 'Hello GoWorkR!';
