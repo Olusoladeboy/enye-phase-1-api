@@ -1,0 +1,9 @@
+{
+  "name": "GoWorkR API",
+  "version": "0.1.0",
+  "description": "GoWorkR API Documentation",
+  "apidoc": {
+    "title": "Goworkr ApiDoc",
+    "url" : "https://api.github.com/v1"
+  }
+}
