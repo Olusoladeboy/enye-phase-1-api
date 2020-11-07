@@ -74,6 +74,16 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With, content-type');
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  res.setHeader('Access-Control-Max-Age', '1800');
+  res.setHeader('Access-Control-Allow-Headers', 'content-type');
+  res.setHeader('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, PATCH, OPTIONS');
+  next();
+});
+
 // Use Routes
 app.use('/api', taskRoutes);
 app.use('/api', userRoutes);
@@ -108,8 +118,6 @@ app.use((error, req, res, next) => {
 const server = app.listen(process.env.PORT, hostname, () => {
   console.log(`Server running at http://${hostname}:${process.env.PORT}/`);
 });
-
-console.log(process.env);
 
 app.sayHello = _ => 'Hello GoWorkR!';
 

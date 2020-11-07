@@ -102,6 +102,15 @@ app.use(function (req, res, next) {
     return console.log(err.message);
   });
   next();
+});
+app.use(function (req, res, next) {
+  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With, content-type');
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  res.setHeader('Access-Control-Max-Age', '1800');
+  res.setHeader('Access-Control-Allow-Headers', 'content-type');
+  res.setHeader('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, PATCH, OPTIONS');
+  next();
 }); // Use Routes
 
 app.use('/api', _api.taskRoutes);
@@ -133,7 +142,6 @@ app.use(function (error, req, res, next) {
 var server = app.listen(process.env.PORT, hostname, function () {
   console.log("Server running at http://".concat(hostname, ":").concat(process.env.PORT, "/"));
 });
-console.log(process.env);
 
 app.sayHello = function (_) {
   return 'Hello GoWorkR!';
