@@ -50,6 +50,10 @@ var port = process.env.PORT;
 
 var defaultPath = _path["default"].join(__dirname, '/public');
 
+app.use(function (req, res, next) {
+  res.header('Access-Control-Allow-Origin', '*');
+  next();
+});
 app.use((0, _helmet["default"])());
 app.use(_bodyParser["default"].urlencoded({
   extended: true,

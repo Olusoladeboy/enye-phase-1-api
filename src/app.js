@@ -32,7 +32,10 @@ const app = express();
 const hostname = process.env.HOSTNAME || '0.0.0.0'; // "127.0.0.1";
 const port = process.env.PORT;
 const defaultPath = path.join(__dirname, '/public');
-
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  next();
+});
 app.use(helmet());
 app.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
 app.use(bodyParser.json({ limit: '50mb' }));
