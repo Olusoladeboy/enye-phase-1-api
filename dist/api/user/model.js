@@ -34,21 +34,21 @@ var validateCreate = _joi["default"].object({
   lastName: _joi["default"].string().required(),
   firstName: _joi["default"].string().required(),
   otherName: _joi["default"].string().optional(),
-  gender: _joi["default"].string().required(),
-  birthDate: _joi["default"].date().required(),
-  maritalStatus: _joi["default"].string().required(),
-  phone: _joi["default"].string().required(),
-  email: _joi["default"].string().trim().email().optional(),
+  gender: _joi["default"].string().optional(),
+  birthDate: _joi["default"].date().optional(),
+  maritalStatus: _joi["default"].string().optional(),
+  phone: _joi["default"].string().optional(),
+  email: _joi["default"].string().trim().email().required(),
   address: _joi["default"].string().optional(),
-  state: _joi["default"].string().required(),
-  county: _joi["default"].string().required(),
+  state: _joi["default"].string().optional(),
+  county: _joi["default"].string().optional(),
   country: _joi["default"].string().optional(),
-  password: _joi["default"].string().optional(),
+  password: _joi["default"].string().required(),
   otp: _joi["default"].string().optional(),
   otpCount: _joi["default"].number().optional(),
-  kin: _joi["default"].string().required(),
-  kinPhone: _joi["default"].string().required(),
-  kinAddress: _joi["default"].string().required(),
+  kin: _joi["default"].string().optional(),
+  kinPhone: _joi["default"].string().optional(),
+  kinAddress: _joi["default"].string().optional(),
   profession: _joi["default"].string().optional(),
   bank: _joi["default"].string().optional(),
   bankAccountNumber: _joi["default"].string().optional(),
@@ -56,7 +56,7 @@ var validateCreate = _joi["default"].object({
   reviews: _joi["default"].array().optional(),
   photo: _joi["default"].string().optional(),
   userType: _joi["default"].string().required(),
-  createdBy: _joi["default"].string().trim().length(24).required()
+  createdBy: _joi["default"].string().trim().length(24).optional()
 });
 
 exports.validateCreate = validateCreate;
@@ -130,17 +130,16 @@ var schema = {
   },
   otherName: {
     type: String,
-    required: true,
     text: true
   },
   gender: {
     type: String,
     "enum": Object.values(_constants.GENDER),
-    required: true
+    required: false
   },
   birthDate: {
     type: Date,
-    required: true
+    required: false
   },
   maritalStatus: {
     type: String,
@@ -148,7 +147,7 @@ var schema = {
   },
   phone: {
     type: String,
-    required: true,
+    required: false,
     text: true
   },
   address: {
@@ -166,7 +165,7 @@ var schema = {
   },
   country: {
     type: String,
-    required: true,
+    required: false,
     "default": 'ng'
   },
   email: {
@@ -175,11 +174,13 @@ var schema = {
     lowercase: true,
     text: true,
     unique: true,
+    required: true,
     // eslint-disable-next-line no-useless-escape
     match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please fill a valid email address']
   },
   password: {
-    type: String
+    type: String,
+    required: true
   },
   otp: {
     type: String
@@ -194,7 +195,7 @@ var schema = {
   },
   kin: {
     type: String,
-    required: true
+    required: false
   },
   kinPhone: {
     type: String
