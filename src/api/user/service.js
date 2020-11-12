@@ -56,6 +56,7 @@ export async function createService(data = {}) {
   try {
     data.password = data.password || 'peace'; //! Random password
     const { password, email, phone } = data;
+    console.log(data);
     if (hasProp(data, 'password')) data.password = hash(data.password);
     const { error } = validateCreate.validate(data);
     if (error) throw new Error(`Error validating ${module} data. ${error.message}`);

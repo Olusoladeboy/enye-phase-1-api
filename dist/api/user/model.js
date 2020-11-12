@@ -37,7 +37,7 @@ var validateCreate = _joi["default"].object({
   gender: _joi["default"].string().optional(),
   birthDate: _joi["default"].date().optional(),
   maritalStatus: _joi["default"].string().optional(),
-  phone: _joi["default"].string().optional(),
+  phone: _joi["default"].string().required(),
   email: _joi["default"].string().trim().email().required(),
   address: _joi["default"].string().optional(),
   state: _joi["default"].string().optional(),

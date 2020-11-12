@@ -23,7 +23,7 @@ export const validateCreate = Joi.object({
   gender: Joi.string().optional(),
   birthDate: Joi.date().optional(),
   maritalStatus: Joi.string().optional(),
-  phone: Joi.string().optional(),
+  phone: Joi.string().required(),
   email: Joi.string().trim().email().required(),
   address: Joi.string().optional(),
   state: Joi.string().optional(),

@@ -129,18 +129,19 @@ function _createService() {
             data.password = data.password || 'peace'; //! Random password
 
             password = data.password, email = data.email, phone = data.phone;
+            console.log(data);
             if ((0, _util.hasProp)(data, 'password')) data.password = (0, _util.hash)(data.password);
             _validateCreate$valid = _model.validateCreate.validate(data), error = _validateCreate$valid.error;
 
             if (!error) {
-              _context2.next = 8;
+              _context2.next = 9;
               break;
             }
 
             throw new Error("Error validating ".concat(_module, " data. ").concat(error.message));
 
-          case 8:
-            _context2.next = 10;
+          case 9:
+            _context2.next = 11;
             return _model["default"].findOne({
               $or: [{
                 email: email
@@ -149,45 +150,45 @@ function _createService() {
               }]
             }).exec();
 
-          case 10:
+          case 11:
             duplicate = _context2.sent;
 
             if (!duplicate) {
-              _context2.next = 13;
+              _context2.next = 14;
               break;
             }
 
             throw new Error("Error! Record already exist for ".concat(email, " or ").concat(phone));
 
-          case 13:
+          case 14:
             newRecord = new _model["default"](data);
-            _context2.next = 16;
+            _context2.next = 17;
             return newRecord.save();
 
-          case 16:
+          case 17:
             result = _context2.sent;
 
             if (result) {
-              _context2.next = 19;
+              _context2.next = 20;
               break;
             }
 
             throw new Error("".concat(_module, " record not found."));
 
-          case 19:
+          case 20:
             return _context2.abrupt("return", result);
 
-          case 22:
-            _context2.prev = 22;
+          case 23:
+            _context2.prev = 23;
             _context2.t0 = _context2["catch"](1);
             throw new Error("Error creating ".concat(_module, " record. ").concat(_context2.t0.message));
 
-          case 25:
+          case 26:
           case "end":
             return _context2.stop();
         }
       }
-    }, _callee2, null, [[1, 22]]);
+    }, _callee2, null, [[1, 23]]);
   }));
   return _createService.apply(this, arguments);
 }
