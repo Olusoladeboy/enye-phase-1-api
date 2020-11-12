@@ -110,7 +110,6 @@ function createService() {
 function _createService() {
   _createService = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
     var data,
-        jwtToken,
         password,
         email,
         phone,
@@ -126,8 +125,7 @@ function _createService() {
         switch (_context2.prev = _context2.next) {
           case 0:
             data = _args2.length > 0 && _args2[0] !== undefined ? _args2[0] : {};
-            jwtToken = _args2.length > 1 && _args2[1] !== undefined ? _args2[1] : '';
-            _context2.prev = 2;
+            _context2.prev = 1;
             data.password = data.password || 'peace'; //! Random password
 
             password = data.password, email = data.email, phone = data.phone;
@@ -135,14 +133,14 @@ function _createService() {
             _validateCreate$valid = _model.validateCreate.validate(data), error = _validateCreate$valid.error;
 
             if (!error) {
-              _context2.next = 9;
+              _context2.next = 8;
               break;
             }
 
             throw new Error("Error validating ".concat(_module, " data. ").concat(error.message));
 
-          case 9:
-            _context2.next = 11;
+          case 8:
+            _context2.next = 10;
             return _model["default"].findOne({
               $or: [{
                 email: email
@@ -151,45 +149,45 @@ function _createService() {
               }]
             }).exec();
 
-          case 11:
+          case 10:
             duplicate = _context2.sent;
 
             if (!duplicate) {
-              _context2.next = 14;
+              _context2.next = 13;
               break;
             }
 
             throw new Error("Error! Record already exist for ".concat(email, " or ").concat(phone));
 
-          case 14:
+          case 13:
             newRecord = new _model["default"](data);
-            _context2.next = 17;
+            _context2.next = 16;
             return newRecord.save();
 
-          case 17:
+          case 16:
             result = _context2.sent;
 
             if (result) {
-              _context2.next = 20;
+              _context2.next = 19;
               break;
             }
 
             throw new Error("".concat(_module, " record not found."));
 
-          case 20:
+          case 19:
             return _context2.abrupt("return", result);
 
-          case 23:
-            _context2.prev = 23;
-            _context2.t0 = _context2["catch"](2);
+          case 22:
+            _context2.prev = 22;
+            _context2.t0 = _context2["catch"](1);
             throw new Error("Error creating ".concat(_module, " record. ").concat(_context2.t0.message));
 
-          case 26:
+          case 25:
           case "end":
             return _context2.stop();
         }
       }
-    }, _callee2, null, [[2, 23]]);
+    }, _callee2, null, [[1, 22]]);
   }));
   return _createService.apply(this, arguments);
 }

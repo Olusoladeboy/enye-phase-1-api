@@ -52,7 +52,7 @@ export async function fetchService(query, jwtToken) {
 }
 
 // eslint-disable-next-line complexity
-export async function createService(data = {}, jwtToken = '') {
+export async function createService(data = {}) {
   try {
     data.password = data.password || 'peace'; //! Random password
     const { password, email, phone } = data;

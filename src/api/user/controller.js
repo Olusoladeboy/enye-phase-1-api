@@ -34,8 +34,7 @@ export async function fetchHandler(req, res) {
 
 export async function createHandler(req, res) {
   try {
-    const jwtToken = getToken(req);
-    const result = await createService(req.body, jwtToken);
+    const result = await createService(req.body);
     return success(res, 201, result, `${module} record(s) created successfully!`);
   } catch (err) {
     log(req, err);

@@ -74,32 +74,31 @@ function createHandler(_x3, _x4) {
 
 function _createHandler() {
   _createHandler = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(req, res) {
-    var jwtToken, result;
+    var result;
     return regeneratorRuntime.wrap(function _callee2$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
           case 0:
             _context2.prev = 0;
-            jwtToken = (0, _middleware.getToken)(req);
-            _context2.next = 4;
-            return (0, _service.createService)(req.body, jwtToken);
+            _context2.next = 3;
+            return (0, _service.createService)(req.body);
 
-          case 4:
+          case 3:
             result = _context2.sent;
             return _context2.abrupt("return", (0, _util.success)(res, 201, result, "".concat(_module, " record(s) created successfully!")));
 
-          case 8:
-            _context2.prev = 8;
+          case 7:
+            _context2.prev = 7;
             _context2.t0 = _context2["catch"](0);
             log(req, _context2.t0);
             return _context2.abrupt("return", (0, _util.fail)(res, 400, "Error creating ".concat(_module, " record. ").concat(_context2.t0.message)));
 
-          case 12:
+          case 11:
           case "end":
             return _context2.stop();
         }
       }
-    }, _callee2, null, [[0, 8]]);
+    }, _callee2, null, [[0, 7]]);
   }));
   return _createHandler.apply(this, arguments);
 }
