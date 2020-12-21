@@ -1,5 +1,5 @@
 /**
- * @author Nditah
+ * @author Olusola
  * @property {ObjectId} id Media primaryKey
  * @property {String} type Media type "DOC|PDF|IMAGE|AUDIO|VIDEO|DATA"
  * @property {String} name Media name or title

@@ -16,7 +16,7 @@ var _table = _interopRequireDefault(require("./table"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 /**
- * @author Nditah
+ * @author Olusola
  * @property {ObjectId} id Category primaryKey
  * @property {String} type Category type of resource
  * @property {String} code Category code of resource

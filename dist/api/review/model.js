@@ -18,7 +18,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 /* eslint-disable import/no-cycle */
 
 /**
- * @author Nditah
+ * @author Olusola
  * @property {ObjectId} id Review primaryKey
  * @property {Number} star Review star from 0 to 5 (required)
  * @property {ObjectId} user Rated User subject ObjectId

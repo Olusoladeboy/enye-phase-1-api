@@ -1,5 +1,5 @@
 /**
- * @author Nditah
+ * @author Olusola
  * @property {ObjectId} id Category primaryKey
  * @property {String} type Category type of resource
  * @property {String} code Category code of resource

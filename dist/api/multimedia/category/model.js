@@ -16,7 +16,7 @@ var _table = _interopRequireDefault(require("./table"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 /**
- * @author Nditah
+ * @author Olusola
  * @property {ObjectId} id MediaCategory primaryKey
  * @property {String} code MediaCategory code of category used by the system
  * @property {String} name MediaCategory name of category as displayed

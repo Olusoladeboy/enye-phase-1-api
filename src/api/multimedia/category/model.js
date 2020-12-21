@@ -1,5 +1,5 @@
 /**
- * @author Nditah
+ * @author Olusola
  * @property {ObjectId} id MediaCategory primaryKey
  * @property {String} code MediaCategory code of category used by the system
  * @property {String} name MediaCategory name of category as displayed

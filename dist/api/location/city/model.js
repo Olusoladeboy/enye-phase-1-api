@@ -20,7 +20,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 /* eslint-disable no-unused-vars */
 
 /**
- * @author Nditah
+ * @author Olusola
  * @property {ObjectId} id City primaryKey
  * @property {String} name City name (required)
  * @property {String} abbreviation City 2 or 3 letter-abbreviation

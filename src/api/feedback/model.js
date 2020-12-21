@@ -2,13 +2,10 @@
 /* eslint-disable import/no-cycle */
 /**
  * @author Olusola
- * @property {ObjectId} id Review primaryKey
- * @property {Number} star Review star from 0 to 5 (required)
+ * @property {ObjectId} id Feedback primaryKey
  * @property {ObjectId} user Rated User subject ObjectId
- * @property {String} review Review review comment
- * @property {String} task Task reviewed (ObjectId)
- * @description Review model holds record of customer feedback about serveice rendered
- * by User, Partner or experience about a Terminal or Vehicle
+ * @property {String} feedback Feedback review comment
+ * @description Feedback model holds record of customer feedback
  */
 import Joi from 'joi';
 import mongoose from 'mongoose';
@@ -18,25 +15,21 @@ const { Schema } = mongoose;
 const { ObjectId } = Schema.Types;
 
 export const validateCreate = Joi.object({
-  star: Joi.number().required(),
   user: Joi.string().trim().required(),
-  review: Joi.string().trim().required(),
-  task: Joi.string().trim().length(24).optional(),
+  feedback: Joi.string().trim().required(),
   createdBy: Joi.string().trim().length(24).required(),
 });
 
 export const validateUpdate = Joi.object({
-  star: Joi.number().min(1).max(5).optional(),
   user: Joi.string().trim().optional(),
   review: Joi.string().trim().optional(),
   updatedBy: Joi.string().trim().length(24).required(),
 });
 
 export const schema = {
-  star: { type: Number, min: 1, max: 5, required: [true, 'Why no star?'] },
+  code: { type: String },
   user: { type: ObjectId, ref: 'User' },
-  review: { type: String },
-  task: { type: ObjectId, ref: 'Task' },
+  feedback: { type: String },
   createdBy: { type: ObjectId, required: true },
   updatedBy: { type: ObjectId, ref: 'User' },
   deleted: { type: Boolean, default: false },
@@ -47,8 +40,8 @@ export const schema = {
 const options = DATABASE.OPTIONS;
 
 const newSchema = new Schema(schema, options);
-newSchema.set('collection', 'review');
+newSchema.set('collection', 'feedback');
 
-const Review = mongoose.model('Review', newSchema);
+const Feedback = mongoose.model('Feedback', newSchema);
 
-export default Review;
+export default Feedback;
