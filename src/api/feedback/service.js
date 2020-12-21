@@ -38,7 +38,7 @@ export async function createService(data = {}) {
       throw new Error(`${module} record not found.`);
     }
     const result2 = await User.updateOne({ _id: result.user },
-      { $push: { reviews: result._id } }).exec();
+      { $push: { feedbacks: result._id } }).exec();
     return result;
   } catch (err) {
     throw new Error(`Error creating ${module} record. ${err.message}`);
@@ -80,7 +80,7 @@ export async function deleteService(recordId = '') {
     }
     const result2 = await User.updateOne({ _id: result.user },
       // eslint-disable-next-line no-underscore-dangle
-      { $pull: { reviews: result._id } }).exec();
+      { $pull: { feedbacks: result._id } }).exec();
     return result2;
   } catch (err) {
     throw new Error(`Error deleting ${module} record. ${err.message}`);
