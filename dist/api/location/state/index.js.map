@@ -1,1 +1,0 @@
-{"version":3,"sources":["../../../../src/api/location/state/index.js"],"names":["routes"],"mappings":";;;;;;;AACA;;;;AADA;eAGeA,kB","sourcesContent":["/* eslint-disable quotes */\nimport routes from \"./routes\";\n\nexport default routes;\n"],"file":"index.js"}

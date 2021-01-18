@@ -7,9 +7,10 @@ export const success = (res,
   .status(status || 200)
   .json({
     success: true,
+    status,
     message: msg || 'Operation Successful(s)',
     count: entity ? entity.length : 0,
-    payload: entity || [],
+    results: entity || [],
   });
 
 export const fail = (res,
@@ -18,6 +19,7 @@ export const fail = (res,
   .status(status || 500)
   .json({
     success: false,
+    status,
     payload: [],
     message: msg || 'Operation failed!',
   });

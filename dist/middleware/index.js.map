@@ -1,1 +1,0 @@
-{"version":3,"sources":["../../src/middleware/index.js"],"names":[],"mappings":";;;;;;AAAA;;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA","sourcesContent":["export * from \"./authorization\";\n"],"file":"index.js"}

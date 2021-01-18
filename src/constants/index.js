@@ -21,6 +21,31 @@ export const MARITAL_STATUS = {
   UNKNOWN: 'UNKNOWN',
 };
 
+export const FLUTTERWAVE = {
+  LIVE_URL: 'https://api.ravepay.co',
+  TEST_URL: 'https://ravesandboxapi.flutterwave.com',
+  PAY: '/flwv3-pug/getpaidx/api/v2/hosted/pay',
+  VERIFY: '/flwv3-pug/getpaidx/api/v2/verify',
+  REDIRECT_URL: 'https://pmtonline.herokuapp.com/verify',
+  SUBACCOUNT: '/v2/gpx/subaccounts',
+  TRANSACTION: '/v2/gpx/transactions',
+  TRANSACTION_EVENTS: '/v2/gpx/transactionmeta/events',
+  SETTLEMENT: '/v2/merchant/settlements',
+  BVN: '/v2/kyc/bvn',
+};
+
+export const PAYSTACK = {
+  LIVE_URL: 'https://api.paystack.co',
+  TEST_URL: 'https://api.paystack.co',
+  PAY: '/flwv3-pug/getpaidx/api/v2/hosted/pay',
+  VERIFY: '/transaction/verify',
+  REDIRECT_URL: 'https://pmtonline.herokuapp.com/verify',
+  TRANSACTION: '/v2/gpx/transactions',
+  TRANSACTION_EVENTS: '/v2/gpx/transactionmeta/events',
+  SETTLEMENT: '/v2/merchant/settlements',
+  BVN: '/v2/kyc/bvn',
+};
+
 export const DATABASE = {
   TABLES: ['User', 'PARTNER', 'OWNER', 'VEHICLE', 'ASSET'],
   PRELOAD_TABLE_DATA: { TRUE: true, FALSE: false, DEFAULT: false },

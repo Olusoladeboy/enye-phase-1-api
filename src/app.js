@@ -16,15 +16,7 @@ import helmet from 'helmet';
 
 // import routes
 import {
-  taskRoutes,
-  userRoutes,
-  categoryRoutes,
-  locationRoutes,
-  multimediaRoutes,
-  reviewRoutes } from './api';
-import database from './config';
-
-import Access from './api/access/model';
+  rateRoutes } from './api';
 
 dotenv.config();
 const app = express();
@@ -45,36 +37,12 @@ app.use(compression());
 app.use(express.static(defaultPath));
 app.set('trust proxy', true);
 
-database.once('open', () => {
-  console.log('Successfully connected to the database!');
-});
-
-database.on('close', () => {
-  database.removeAllListeners();
-});
-
 app.get('/api', (req, res) => {
   res.json({
     success: true,
     payload: [],
-    message: 'Hello, from GoWorkR API',
+    message: 'Hello, from Rates API',
   });
-});
-
-app.use((req, res, next) => {
-  const agent = req.headers['user-agent'];
-  const { method } = req;
-  const baseUrl = req.originalUrl;
-  const version = `HTTP/${req.httpVersion}`;
-  const status = res.statusCode;
-  // const software = req.headers["user-agent"].match(/\((.+?)\)/)[1];
-  const ipaddress = req.headers.origin;
-  // getRequestIp(req);
-  const allData = { ipaddress, agent, method, baseUrl, version, status };
-  // console.log(allData);
-  const newRecord = new Access(allData);
-  newRecord.save().then().catch((err) => console.log(err.message));
-  next();
 });
 
 app.use((req, res, next) => {
@@ -88,19 +56,14 @@ app.use((req, res, next) => {
 });
 
 // Use Routes
-app.use('/api', taskRoutes);
-app.use('/api', userRoutes);
-app.use('/api', categoryRoutes);
-app.use('/api', locationRoutes);
-app.use('/api', multimediaRoutes);
-app.use('/api', reviewRoutes);
+app.use('/api', rateRoutes);
 
 app.get('/api/*', (req, res) => {
   res.status(404);
   res.json({
     success: false,
     payload: null,
-    message: `GOWORKR API SAYS: Endpoint not found for path: ${req.path}`,
+    message: `ENYE API SAYS: Endpoint not found for path: ${req.path}`,
   });
 });
 
@@ -109,7 +72,7 @@ app.use((error, req, res, next) => {
   res.json({
     success: false,
     payload: null,
-    message: `GOWORKR API SAYS: ${error.message} for path: ${req.path}`,
+    message: `ENYE API SAYS: ${error.message} for path: ${req.path}`,
   });
   next();
 });
@@ -122,7 +85,7 @@ const server = app.listen(process.env.PORT, hostname, () => {
   console.log(`Server running at http://${hostname}:${process.env.PORT}/`);
 });
 
-app.sayHello = _ => 'Hello GoWorkR!';
+app.sayHello = _ => 'Hello ENYE!';
 
 setInterval(() => server.getConnections((err, connections) => {
   if (err) {
@@ -150,10 +113,6 @@ function shutDown() {
       console.error(err);
       process.exit(1);
     }
-    database.close(() => {
-      console.log('Mongoose connection disconnected');
-      process.exit(0);
-    });
     console.log('Closed out remaining connections');
     process.exit(0);
   });

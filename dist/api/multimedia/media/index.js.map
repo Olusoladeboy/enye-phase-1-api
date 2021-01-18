@@ -1,1 +1,0 @@
-{"version":3,"sources":["../../../../src/api/multimedia/media/index.js"],"names":[],"mappings":";;;;;;;;;;;;AAAA","sourcesContent":["export { default } from './routes';\n"],"file":"index.js"}
