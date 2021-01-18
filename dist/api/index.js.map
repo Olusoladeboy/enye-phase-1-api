@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../src/api/index.js"],"names":[],"mappings":";;;;;;;;;;;;AAEA","sourcesContent":["/* eslint-disable import/prefer-default-export */\n/* eslint-disable object-curly-newline */\nimport rateRoutes from './rate';\n\nexport {\n  rateRoutes,\n};\n"],"file":"index.js"}

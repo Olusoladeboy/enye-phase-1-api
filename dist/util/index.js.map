@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../src/util/index.js"],"names":[],"mappings":";;;;;;;;;;;;;;;AAAA;;AAEA;;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA","sourcesContent":["import myLogger from './logger';\n\nexport * from './response';\n\nexport { myLogger as log4js };\n"],"file":"index.js"}
