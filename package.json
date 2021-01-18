@@ -14,14 +14,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Olusoladeboy/project-x.git"
+    "url": " git@github.com:Olusoladeboy/enye-phase-1-api.git "
   },
   "author": "Emmanuel Olusola",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Olusoladeboy/project-x/issues"
+    "url": " git@github.com:Olusoladeboy/enye-phase-1-api.git "
   },
-  "homepage": "https://github.com/Olusoladeboy/project-x#readme",
+  "homepage": " git@github.com:Olusoladeboy/enye-phase-1-api.git ",
   "dependencies": {
     "api-query-params": "^4.15.0",
     "app-root-path": "^3.0.0",
